@@ -14,15 +14,19 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace cybersecurity_awareness_chatbot_p2
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+{//start of namespace
     public partial class MainWindow : Window
-    {
+    {//start of class
         public MainWindow()
-        {
+        {//start of constructor
             InitializeComponent();
-        }
-    }
-}
+
+            /*creating an instance for the class greet_user
+            with constructor*/
+            new greet_user();
+
+        }//end of constructor
+
+    }//end of class
+
+}//end of namespace 

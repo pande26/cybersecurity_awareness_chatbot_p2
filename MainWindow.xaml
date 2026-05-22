@@ -8,7 +8,27 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid> <!-- start of parent -->
         
-        
+        <!-- grid page for logo -->
+        <Grid> <!-- start of logo grid -->
+            
+            <!-- image logo displaying-->
+            <Image  
+                Source="/logo.jpeg"
+                Height="250"
+                Width="400"
+                Margin="0,0,0,150"
+                />
+            
+            <!-- button to start Valerie -->
+            <Button  
+                Height="50"
+                Width="200"
+                Content="Start Valerie"
+                Margin="0,300,0,0"
+                />
+            
+
+        </Grid><!-- end of logo grid -->
         
     </Grid> <!-- end of parent -->
 </Window>
