@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:cybersecurity_awareness_chatbot_p2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid> <!-- start of parent -->
+        Title="Valerie" Height="450" Width="800">
+    <Grid > <!-- start of parent -->
         
         <!-- grid page for logo -->
-        <Grid> <!-- start of logo grid -->
+        <Grid
+            x:Name="logo_grid"
+            Visibility="Hidden"
+            > <!-- start of logo grid -->
             
             <!-- image logo displaying-->
             <Image  
@@ -25,10 +28,36 @@
                 Width="200"
                 Content="Start Valerie"
                 Margin="0,300,0,0"
+                Click="start_valerie"
                 />
             
 
         </Grid><!-- end of logo grid -->
         
+        <!-- username grid -->
+        <Grid  
+            x:Name="username_grid"
+            Visibility="Visible"
+            ><!-- start of username grid -->
+            
+            <!-- TextBox for user input -->
+            <TextBox  
+                x:Name="user_name"
+                Height="50"
+                Width="300"
+                Margin="0,0,0,0"
+                />
+            
+            <!-- button to submit name -->
+            <Button  
+                Height="50"
+                Width="300"
+                Margin="0,200,0,0"
+                Content="Continue"
+                Click="submit_username"
+                />
+
+        </Grid><!-- end of username grid -->
+
     </Grid> <!-- end of parent -->
 </Window>
