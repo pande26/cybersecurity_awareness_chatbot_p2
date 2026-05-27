@@ -54,6 +54,18 @@ namespace cybersecurity_awareness_chatbot_p2
         {//start of submit_username() method
 
             //temp variables
+            string name = user_name.Text.ToString().Trim();
+            bool found = check_name(name);
+
+            // ADD THIS CHECK
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Please enter your name before continuing...");
+                user_name.Focus();
+                return;
+            }
+
+            //temp variables
             string filename = "user_name.txt";
 
             //check if the file exists or not, the auto create
@@ -65,18 +77,14 @@ namespace cybersecurity_awareness_chatbot_p2
 
             }//end of if statement
 
-            //temp variables
-            string name = user_name.Text.ToString();
-            bool found = check_name(name);
 
             //store the username into a text file
-            if (found)
+            if (!found)
             {//start of if statement
 
                 //store the name in a test file
-                MessageBox.Show("Welcome " + name);
-
                 File.AppendAllText(filename, name + "\n");
+                MessageBox.Show("Welcome " + name + "!");
 
                 //hide the username grid and set the chats grid to visible
                 username_grid.Visibility = Visibility.Hidden;
@@ -87,7 +95,7 @@ namespace cybersecurity_awareness_chatbot_p2
             {//start of else statement 
 
                 //welcome back the user
-                MessageBox.Show("Welcome back " + name);
+                MessageBox.Show("Welcome back " + name + "!");
 
                 //set the username grid to be hidden
                 username_grid.Visibility = Visibility.Hidden;
