@@ -55,8 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="message_displayer.cs" />
     <Compile Include="respond.cs" />
+    <Compile Include="response_finder.cs" />
     <Compile Include="response_handler.cs" />
+    <Compile Include="topic_detector.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
