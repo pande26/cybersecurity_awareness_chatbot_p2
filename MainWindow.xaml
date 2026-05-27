@@ -5,104 +5,148 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:cybersecurity_awareness_chatbot_p2"
         mc:Ignorable="d"
-        Title="Valerie" Height="450" Width="800">
+        Title="Valerie" Height="450" Width="800"
+        Background="#F5FBF9">
+
     <Grid >
         <!-- start of parent -->
 
         <!-- grid page for logo -->
-        <Grid
-            x:Name="logo_grid"
-            Visibility="Visible"
-            >
+        <Grid x:Name="logo_grid" 
+              Visibility="Visible" 
+              Background="#F5FBF9"
+              >
             <!-- start of logo grid -->
 
             <!-- image logo displaying-->
-            <Image  
-                Source="/logo.jpeg"
-                Height="250"
-                Width="400"
-                Margin="0,0,0,150"
+            <Image 
+                Source="/logo.jpg" 
+                Height="250" 
+                Width="400" 
+                Margin="0,0,0,150" 
                 />
 
             <!-- button to start Valerie -->
-            <Button  
-                Height="50"
-                Width="200"
-                Content="Start Valerie"
-                Margin="0,300,0,0"
-                Click="start_valerie"
-                />
-
-
+            <Button Height="50" 
+                    Width="200" 
+                    Content="Start Valerie" 
+                    Margin="0,300,0,0" 
+                    Click="start_valerie"
+                    Background="#A2D2FF" 
+                    Foreground="#1A4D8C"
+                    FontWeight="Bold"
+                    BorderBrush="#7BAED4"
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    />
         </Grid>
         <!-- end of logo grid -->
 
         <!-- username grid -->
-        <Grid  
-            x:Name="username_grid"
-            Visibility="Hidden"
-            >
+        <Grid x:Name="username_grid" 
+              Visibility="Hidden" 
+              Background="#F5FBF9"
+              >
             <!-- start of username grid -->
 
             <!-- image logo displaying-->
-            <Image  
-                Source="/logo.jpeg"
-                Height="250"
-                Width="400"
-                Margin="0,0,0,150"
+            <Image 
+                Source="/logo.jpg" 
+                Height="250" 
+                Width="400" 
+                Margin="0,0,0,150" 
                 />
 
             <!-- TextBox for user input -->
-            <TextBox  
-                x:Name="user_name"
-                Height="50"
-                Width="270"
-                Margin="0,190,0,0"
-                />
+            <TextBox x:Name="user_name" 
+                     Height="50" 
+                     Width="270" 
+                     Margin="0,190,0,0"
+                     Background="White"
+                     Foreground="#333333"
+                     BorderBrush="#A2D2FF"
+                     BorderThickness="2"
+                     FontSize="14"
+                     TextAlignment="Center"
+                     />
+
+            <!-- hint text -->
+            <TextBlock Text="Enter your name to continue" 
+                       FontSize="12" 
+                       Foreground="#666666"
+                       HorizontalAlignment="Center"
+                       Margin="0,260,0,0"
+                       />
 
             <!-- button to submit name -->
-            <Button
-                Height="50"
-                Width="270"
-                Margin="0,340,0,0"
-                Content="Continue"
-                Click="submit_username"
-                />
-
+            <Button Height="50" 
+                    Width="270" 
+                    Margin="0,340,0,0" 
+                    Content="Continue" 
+                    Click="submit_username"
+                    Background="#A2D2FF" 
+                    Foreground="#1A4D8C"
+                    FontWeight="Bold"
+                    BorderBrush="#7BAED4"
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    />
+            
         </Grid>
         <!-- end of username grid -->
 
         <!-- grid for the chats page -->
-        <Grid  
-            x:Name="chats_grid"
-            Visibility="Hidden"
-            >
+        <Grid x:Name="chats_grid" 
+              Visibility="Hidden" 
+              Background="#E8F4F0"
+              >
             <!-- start of chats grid -->
 
-            <!-- list view to show  chats -->
-            <ListView  
-                Height="350"
-                Margin="0,0,0,70"
-                x:Name="chats"
-                />
+            <!-- title header -->
+            <TextBlock Text="Valerie" 
+                       FontSize="14" 
+                       FontWeight="Bold" 
+                       Foreground="#1A4D8C"
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,0"
+                       />
+
+            <!-- list view to show chats -->
+            <ListView Height="320" 
+                      Margin="10,40,10,70" 
+                      x:Name="chats" 
+                      Background="White"
+                      BorderBrush="#A2D2FF"
+                      BorderThickness="2"
+                      />
 
             <!-- questions textbox -->
-            <TextBox
-                Height="50"
-                Width="200"
-                Margin="0,350,200,0"
-                x:Name="question"
-                />
+            <TextBox Height="45" 
+                     Width="470" 
+                     Margin="10,350,0,0" 
+                     x:Name="question"
+                     Background="White"
+                     Foreground="#333333"
+                     BorderBrush="#A2D2FF"
+                     BorderThickness="2"
+                     FontSize="13"
+                     VerticalContentAlignment="Center"
+                     />
 
             <!-- button to submit the question -->
-            <Button  
-                Height="50"
-                Width="200"
-                Margin="230,350,0,0"
-                Content="Send"
-                Click="send"                
-                />
-
+            <Button Height="45" 
+                    Width="100" 
+                    Margin="490,350,0,0" 
+                    Content="Send" 
+                    Click="send" 
+                    Background="#A2D2FF" 
+                    Foreground="#1A4D8C"
+                    FontWeight="Bold"
+                    BorderBrush="#7BAED4"
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    />
+            
         </Grid>
         <!-- end of chats grid -->
 
