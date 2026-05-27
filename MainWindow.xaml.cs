@@ -37,6 +37,11 @@ namespace cybersecurity_awareness_chatbot_p2
              * without an object name*/
             new respond(reply, ignore) { };
 
+            /*creating an instance for the ResponseHandler class
+            with constructor passing reply and ignore*/
+            new response_handler(reply, ignore);
+
+
         }//end of constructor
 
         private void start_valerie(object sender, RoutedEventArgs e)
@@ -84,7 +89,7 @@ namespace cybersecurity_awareness_chatbot_p2
 
                 //store the name in a test file
                 File.AppendAllText(filename, name + "\n");
-                MessageBox.Show("Welcome " + name + "!");
+                MessageBox.Show("Welcome " + name );
 
                 //hide the username grid and set the chats grid to visible
                 username_grid.Visibility = Visibility.Hidden;
@@ -95,7 +100,7 @@ namespace cybersecurity_awareness_chatbot_p2
             {//start of else statement 
 
                 //welcome back the user
-                MessageBox.Show("Welcome back " + name + "!");
+                MessageBox.Show("Welcome back " + name );
 
                 //set the username grid to be hidden
                 username_grid.Visibility = Visibility.Hidden;

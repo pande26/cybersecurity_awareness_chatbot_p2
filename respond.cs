@@ -324,6 +324,11 @@ namespace cybersecurity_awareness_chatbot_p2
             add_answers.Add("password a password is used to secure access to your accounts or devices.");
             add_answers.Add("password it should be strong, long and not easy to guess.");
             add_answers.Add("password avoid using personal details when creating one.");
+            add_answers.Add("password Create strong passwords that are at least 12 characters long with a mix of uppercase, lowercase, numbers, and symbols.");
+            add_answers.Add("password Never reuse passwords across different accounts. If one gets hacked, all become vulnerable.");
+            add_answers.Add("password Use a password manager to generate and store unique passwords for each account.");
+            add_answers.Add("password Avoid using personal information like birthdays, names, or pet names in your passwords.");
+            add_answers.Add("password Enable two-factor authentication whenever possible for an extra layer of security.");
 
 
             add_answers.Add("hacked account immediately secure your account and log out of all devices.");
@@ -346,7 +351,18 @@ namespace cybersecurity_awareness_chatbot_p2
             add_answers.Add("vpn it improves security when using public networks.");
 
 
+            add_answers.Add("scam Be cautious of unsolicited messages, emails, or calls. Scammers often create a sense of urgency.");
+            add_answers.Add("scam Never share personal information or send money to someone you haven't verified in person.");
+            add_answers.Add("scam If something sounds too good to be true, it probably is a scam. Trust your instincts.");
+            add_answers.Add("scam Legitimate companies will never ask for your password or banking details via email or phone.");
+            add_answers.Add("scam Report suspicious messages to the South African Banking Risk Information Centre (SABRIC).");
 
+
+            add_answers.Add("privacy Review your privacy settings on social media regularly. Limit what personal information you share publicly.");
+            add_answers.Add("privacy Use privacy-focused browsers like DuckDuckGo when possible to avoid tracking.");
+            add_answers.Add("privacy Be careful about what you post online. Once something is on the internet, it's difficult to remove.");
+            add_answers.Add("privacy Check app permissions on your phone and computer. Only give access to information that is necessary.");
+            add_answers.Add("privacy Use a VPN when on public Wi-Fi to encrypt your internet traffic and protect your personal information.");
 
             //sentiment detection
 
