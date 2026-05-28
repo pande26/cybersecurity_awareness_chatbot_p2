@@ -59,6 +59,7 @@
     <Compile Include="respond.cs" />
     <Compile Include="response_finder.cs" />
     <Compile Include="response_handler.cs" />
+    <Compile Include="sentiment_detector.cs" />
     <Compile Include="topic_detector.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

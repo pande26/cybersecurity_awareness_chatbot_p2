@@ -31,6 +31,7 @@ namespace cybersecurity_awareness_chatbot_p2
         private response_handler handler;
         private topic_detector detector;
         private message_displayer displayer;
+        private sentiment_detector sentimentDetector;
 
         //variables to store the last detected topic for follow-up questions
         private string last_topic = "";
@@ -53,6 +54,7 @@ namespace cybersecurity_awareness_chatbot_p2
             handler = new response_handler(reply, ignore);
             detector = new topic_detector();
             displayer = new message_displayer();
+            sentimentDetector = new sentiment_detector(reply, finder);
 
         }//end of constructor
 
@@ -205,47 +207,51 @@ namespace cybersecurity_awareness_chatbot_p2
 
             }//end of if statement
 
-            // Check if it's a follow-up question
-            if (is_follow_up_question(questions) && !string.IsNullOrEmpty(last_topic))
-            {//start of if statement
+            //checking for sentiment in the user's question
+            string sentimentResult = sentimentDetector.process_sentiment(questions);
 
-                //getting a follow-up response based on the last topic
+            if (!string.IsNullOrEmpty(sentimentResult))
+            {
+                display_user_message(questions);
+                display_bot_message(sentimentResult);
+                question.Text = "";
+                return;
+            }
+
+            //checking for follow-up question and if a topic was previously detected
+            if (is_follow_up_question(questions) && !string.IsNullOrEmpty(last_topic))
+            {
                 string follow_up_response = "";
 
                 // Get another response for the same topic
                 if (last_topic == "password")
-                {//start of if statement
-
+                {
                     follow_up_response = finder.get_response_for_topic("password");
-                }//end of if statement
+                }
                 else if (last_topic == "scam")
-                {//start of else if statement
+                {
                     follow_up_response = finder.get_response_for_topic("scam");
-                }//end of else if statement
+                }
                 else if (last_topic == "privacy")
-                {//start of else if statement
+                {
                     follow_up_response = finder.get_response_for_topic("privacy");
-                }//end of else if statement
+                }
                 else if (last_topic == "phishing")
-                {//start of else if statement
+                {
                     follow_up_response = finder.get_response_for_topic("phishing");
-                }//end of else if statement
+                }
 
-                //If a follow-up response is found, display it
+                // If a follow-up response is found, display it
                 if (!string.IsNullOrEmpty(follow_up_response))
-                {//start of if statement
-
-                    // Display user message and bot response
+                {
                     display_user_message(questions);
                     display_bot_message(follow_up_response);
                     question.Text = "";
                     return;
+                }
+            }
 
-                }//end of if statement
-
-            }//end of if statement
-
-            // Regular question processing
+            //split the question into words and search for matches in the reply list
             string[] words = questions.Split(' ');
             bool found = false;
             string message = "";
@@ -255,38 +261,34 @@ namespace cybersecurity_awareness_chatbot_p2
 
             //loop through each word in the user's question
             foreach (string word in words)
-            {//start of foreach
+            {
                 if (!ignore.Contains(word.ToLower()))
-                {//start of if statement
+                {
                     per_word.Clear();
 
                     foreach (string answer in reply)
-                    {//start of inner foreach
+                    {
                         if (answer.ToLower().Contains(word.ToLower()))
-                        {//start of inner if statement
+                        {
                             found = true;
                             per_word.Add(answer);
-                        }//end of inner if statement
-                    }//end of inner foreach
+                        }
+                    }
 
                     if (found && per_word.Count > 0)
-                    {//start of if statement
+                    {
                         int indexing = indexer.Next(0, per_word.Count);
                         answers_found.Add(per_word[indexing]);
                         found = false;
-                    }//end of if statement
-
-                }//end of if statement
-
-            }//end of foreach
+                    }
+                }
+            }
 
             //if answers are found, display them
             if (answers_found.Count > 0)
-            {//start of if statement
-
+            {
                 foreach (string per_answer in answers_found)
-                {//start of foreach
-
+                {
                     // Extract response without topic prefix
                     int space_index = per_answer.IndexOf(' ');
                     if (space_index > 0)
@@ -304,29 +306,25 @@ namespace cybersecurity_awareness_chatbot_p2
                         last_topic = "privacy";
                     else if (lower_answer.StartsWith("phishing"))
                         last_topic = "phishing";
-
-                }//end of foreach
+                }
 
                 display_user_message(questions);
                 display_bot_message(message.TrimEnd('\n'));
-
-            }//end of if statement
+            }
             else
-            {//start of else statement
-
+            {
                 // Fallback responses when nothing matches
                 string[] fallback_messages = {
                     "I'm sorry, I don't understand that. Could you rephrase your question?",
                     "I didn't quite get that. Try asking about passwords, scams, or privacy!",
                     "Hmm, I'm not sure how to respond to that. Can you ask something else?"
-                };
+                        };
                 Random random = new Random();
                 string fallback_message = fallback_messages[random.Next(fallback_messages.Length)];
 
                 display_user_message(questions);
                 display_bot_message(fallback_message);
-
-            }//end of else statement
+            }
 
             question.Text = "";
 
