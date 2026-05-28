@@ -5,16 +5,15 @@ Valerie is a cybersecurity awareness chatbot developed for South African citizen
 
 Features
 Part 2 Features:
-Feature	Description
-🎨 Modern GUI	Clean WPF interface with light blue color scheme
-🎵 Voice Greeting	Plays WAV audio greeting on application startup
-👤 User Memory	Remembers returning users via text file storage
-🔍 Keyword Recognition	Detects "password", "scam", "privacy", "phishing" topics
-🎲 Random Responses	Multiple responses per topic with random selection
-💬 Conversation Flow	Handles follow-up questions like "another tip", "tell me more"
-😊 Sentiment Detection	Responds to emotions (worried, frustrated, confused, happy, sad, angry)
-⚠️ Error Handling	Graceful handling of empty inputs and unrecognized questions
-📁 Code Optimization	Separate classes for each responsibility
+🎨 Modern GUI - Clean WPF interface with light blue color scheme
+🎵 Voice Greeting - Plays a recorded WAV audio greeting when the application starts
+👤 User Memory - Remembers returning users via text file storage
+🔍 Keyword Recognition - Detects "password", "scam", "privacy", "phishing" topics
+🎲 Random Responses - Multiple responses per topic with random selection
+💬 Conversation Flow - Handles follow-up questions like "another tip", "tell me more"
+😊 Sentiment Detection - Responds to emotions (worried, frustrated, confused, happy, sad, angry)
+⚠️ Error Handling - Graceful handling of empty inputs and unrecognized questions
+📁 Code Optimization - Separate classes for each responsibility
 
 Technical Requirements Met
 ✅ WPF GUI Application
@@ -42,18 +41,74 @@ cybersecurity_awareness_chatbot_p2/
 ├── response_finder.cs           # Finds responses for specific topics
 ├── response_handler.cs          # Original response processing logic
 ├── topic_detector.cs            # Detects cybersecurity topics
-├── message_displayer.cs         # Formatted chat messages
+├── sentiment_detector.cs        # Detects user sentiment
+├── message_displayer.cs         # Formats and displays chat messages
 ├── voice_recording.wav          # Voice greeting audio file
 ├── logo.jpg                     # Logo image for GUI
 └── README.md                    # This file
 
 Class Descriptions
-Class	                Purpose
-MainWindow.xaml.cs	   Main application logic, event handlers, UI navigation
-greet_user.cs	         Plays WAV audio greeting using SoundPlayer
-respond.cs	           Stores all response data and ignore words list
-response_finder.cs	   Finds random responses for specific topics (password, scam, privacy)
-response_handler.cs	   Original response processing algorithm
-topic_detector.cs	     Detects cybersecurity topics from user input
-message_displayer.cs   Formats and displays chat messages with colors
+MainWindow.xaml.cs
+Main application logic and event handlers
+Handles UI navigation between grids (logo, username, chat)
+Manages the send button and response processing
+Coordinates all other classes
 
+greet_user.cs
+Plays a WAV audio greeting when the application launches
+Uses System.Media.SoundPlayer class
+Auto-detects the correct file path
+
+respond.cs
+Stores all response data (greeting, purpose, password, scam, privacy, phishing, sentiment)
+Stores the ignore words list (stop words like "a", "an", "the")
+Contains 8 password responses, 5 scam responses, 5 privacy responses
+
+response_finder.cs
+Finds random responses for specific cybersecurity topics
+Searches the reply ArrayList for responses starting with a topic
+Returns a randomly selected response
+
+response_handler.cs
+Original response processing algorithm
+Splits user input into words
+Searches for matching responses in the reply list
+
+topic_detector.cs
+Detects cybersecurity topics from user input
+Recognizes keywords for password, scam, privacy, phishing, greeting, purpose, firewall, VPN
+Returns the topic name as a string
+
+sentiment_detector.cs
+Detects user emotions from input text
+Recognizes worried, frustrated, confused, happy, sad, angry
+Provides empathetic responses with cybersecurity tips
+
+message_displayer.cs
+Formats and displays chat messages with colors
+Shows user messages in dark green
+Shows bot messages in dark blue
+Shows error messages in red
+
+Key Methods
+sentiment_detector.cs:
+detect_sentiment() - Detects user emotion from input
+get_sentiment_response() - Returns empathetic response for detected emotion
+get_random_tip() - Returns random cybersecurity tip
+process_sentiment() - Handles complete sentiment response with tip
+
+response_finder.cs:
+get_response_for_topic() - Returns random response for specific topi
+
+topic_detector.cs:
+detect_topic() - Identifies cybersecurity topic from user input
+
+message_displayer.cs:
+show_user_message() - Displays user message in chat
+show_bot_message() - Displays bot message in chat
+show_error_message() - Displays error message in chat
+
+Prerequisites
+Windows Operating System
+.NET Framework 4.7.2 or later
+Visual Studio 2019/2022
