@@ -26,13 +26,13 @@ namespace cybersecurity_awareness_chatbot_p2
         ArrayList reply = new ArrayList();
         ArrayList ignore = new ArrayList();
 
-        // Declaring all class instances
+        //declaring all class instances
         private response_finder finder;
         private response_handler handler;
         private topic_detector detector;
         private message_displayer displayer;
 
-        //for conversation flow
+        //variables to store the last detected topic for follow-up questions
         private string last_topic = "";
         private string username = "";
 
@@ -74,7 +74,7 @@ namespace cybersecurity_awareness_chatbot_p2
             string name = user_name.Text.ToString().Trim();
             bool found = check_name(name);
 
-            // ADD THIS CHECK
+            //checking for empty input
             if (string.IsNullOrWhiteSpace(name))
             {//start of if statement
 
@@ -165,7 +165,7 @@ namespace cybersecurity_awareness_chatbot_p2
 
         }//end of check_name
 
-        // 
+        //method to check if the question is a follow-up question
         private bool is_follow_up_question(string question)
         {//start of is_follow_up_question
             string lower = question.ToLower();
@@ -188,7 +188,7 @@ namespace cybersecurity_awareness_chatbot_p2
 
         }//end of is_follow_up_question
 
-
+        //method to handle the send button click event
         private void send(object sender, RoutedEventArgs e)
         {//start of send method 
 
@@ -253,34 +253,40 @@ namespace cybersecurity_awareness_chatbot_p2
             ArrayList per_word = new ArrayList();
             ArrayList answers_found = new ArrayList();
 
+            //loop through each word in the user's question
             foreach (string word in words)
-            {
+            {//start of foreach
                 if (!ignore.Contains(word.ToLower()))
-                {
+                {//start of if statement
                     per_word.Clear();
 
                     foreach (string answer in reply)
-                    {
+                    {//start of inner foreach
                         if (answer.ToLower().Contains(word.ToLower()))
-                        {
+                        {//start of inner if statement
                             found = true;
                             per_word.Add(answer);
-                        }
-                    }
+                        }//end of inner if statement
+                    }//end of inner foreach
 
                     if (found && per_word.Count > 0)
-                    {
+                    {//start of if statement
                         int indexing = indexer.Next(0, per_word.Count);
                         answers_found.Add(per_word[indexing]);
                         found = false;
-                    }
-                }
-            }
+                    }//end of if statement
 
+                }//end of if statement
+
+            }//end of foreach
+
+            //if answers are found, display them
             if (answers_found.Count > 0)
-            {
+            {//start of if statement
+
                 foreach (string per_answer in answers_found)
-                {
+                {//start of foreach
+
                     // Extract response without topic prefix
                     int space_index = per_answer.IndexOf(' ');
                     if (space_index > 0)
@@ -298,13 +304,16 @@ namespace cybersecurity_awareness_chatbot_p2
                         last_topic = "privacy";
                     else if (lower_answer.StartsWith("phishing"))
                         last_topic = "phishing";
-                }
+
+                }//end of foreach
 
                 display_user_message(questions);
                 display_bot_message(message.TrimEnd('\n'));
-            }
+
+            }//end of if statement
             else
-            {
+            {//start of else statement
+
                 // Fallback responses when nothing matches
                 string[] fallback_messages = {
                     "I'm sorry, I don't understand that. Could you rephrase your question?",
@@ -316,7 +325,8 @@ namespace cybersecurity_awareness_chatbot_p2
 
                 display_user_message(questions);
                 display_bot_message(fallback_message);
-            }
+
+            }//end of else statement
 
             question.Text = "";
 

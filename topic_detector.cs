@@ -1,9 +1,11 @@
 ﻿namespace cybersecurity_awareness_chatbot_p2
-{
+{//start of namespace
     public class topic_detector
-    {
+    {//start of class
         public string detect_topic(string question)
-        {
+        {//start of method
+
+            //converting the question to lowercase for easier keyword matching
             string lower = question.ToLower();
 
             // Password related keywords
@@ -52,6 +54,8 @@
                 return "fraud";
 
             return "unknown";
-        }
-    }
-}
+        }//end of method
+
+    }//end of class
+
+}//end of namespace
