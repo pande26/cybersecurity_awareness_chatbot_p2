@@ -211,45 +211,49 @@ namespace cybersecurity_awareness_chatbot_p2
             string sentimentResult = sentimentDetector.process_sentiment(questions);
 
             if (!string.IsNullOrEmpty(sentimentResult))
-            {
+            {//start of if statement
                 display_user_message(questions);
                 display_bot_message(sentimentResult);
                 question.Text = "";
                 return;
-            }
+
+            }//end of if statement
 
             //checking for follow-up question and if a topic was previously detected
             if (is_follow_up_question(questions) && !string.IsNullOrEmpty(last_topic))
-            {
+            {//start of if statement
+
                 string follow_up_response = "";
 
                 // Get another response for the same topic
                 if (last_topic == "password")
-                {
+                {//start of if statement
                     follow_up_response = finder.get_response_for_topic("password");
-                }
+                }//end of if statement
                 else if (last_topic == "scam")
-                {
+                {//start of else if statement
                     follow_up_response = finder.get_response_for_topic("scam");
-                }
+                }//end of else if statement
                 else if (last_topic == "privacy")
-                {
+                {//start of else if statement
                     follow_up_response = finder.get_response_for_topic("privacy");
-                }
+                }//end of else if statement
                 else if (last_topic == "phishing")
-                {
+                {//start of else if statement
                     follow_up_response = finder.get_response_for_topic("phishing");
-                }
+                }//end of else if statement
 
-                // If a follow-up response is found, display it
+                //if a follow-up response is found, display it
                 if (!string.IsNullOrEmpty(follow_up_response))
-                {
+                {//start of if statement
                     display_user_message(questions);
                     display_bot_message(follow_up_response);
                     question.Text = "";
                     return;
-                }
-            }
+
+                }//end of if statement
+
+            }//end of if statement
 
             //split the question into words and search for matches in the reply list
             string[] words = questions.Split(' ');
