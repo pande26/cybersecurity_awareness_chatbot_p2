@@ -32,6 +32,7 @@ namespace cybersecurity_awareness_chatbot_p2
         private sentiment_detector sentimentDetector;
         private task_manager taskManager;
         private quiz_manager quizManager;
+        private nlp_processor nlpProcessor;
 
         // Variables to store the last detected topic for follow-up questions
         private string last_topic = "";
@@ -74,11 +75,14 @@ namespace cybersecurity_awareness_chatbot_p2
             username = name;
             displayer.set_username(name);
 
-            // Initialize task manager
+            // Initializing task manager
             initialize_task_manager();
 
-            // Initialize quiz manager
+            // Initializing quiz manager
             initialize_quiz_manager();
+
+            // Initializing NLP processor
+            initialize_nlp_processor();
 
             string filename = "user_name.txt";
 
@@ -151,7 +155,7 @@ namespace cybersecurity_awareness_chatbot_p2
                 return;
             }
 
-            // Checking for sentiment in the user's question
+            // CHECK FOR SENTIMENT
             string sentimentResult = sentimentDetector.process_sentiment(questions);
 
             if (!string.IsNullOrEmpty(sentimentResult))
@@ -162,7 +166,24 @@ namespace cybersecurity_awareness_chatbot_p2
                 return;
             }
 
-            // Checking for follow-up question and if a topic was previously detected
+            //CHECK FOR NLP COMMANDS
+            // Initialize NLP processor if not already done
+            if (nlpProcessor == null)
+            {
+                initialize_nlp_processor();
+            }
+
+            string nlpResult = nlpProcessor.process_nlp(questions, chats);
+
+            if (!string.IsNullOrEmpty(nlpResult))
+            {
+                display_user_message(questions);
+                display_bot_message(nlpResult);
+                question.Text = "";
+                return;
+            }
+
+            //CHECK FOR FOLLOW-UP QUESTIONS
             if (is_follow_up_question(questions) && !string.IsNullOrEmpty(last_topic))
             {
                 string follow_up_response = "";
@@ -193,6 +214,7 @@ namespace cybersecurity_awareness_chatbot_p2
                 }
             }
 
+            //REGULAR RESPONSE PROCESSING
             // Split the question into words and search for matches in the reply list
             string[] words = questions.Split(' ');
             bool found = false;
@@ -252,10 +274,10 @@ namespace cybersecurity_awareness_chatbot_p2
             else
             {
                 string[] fallback_messages = {
-                    "I'm sorry, I don't understand that. Could you rephrase your question?",
-                    "I didn't quite get that. Try asking about passwords, scams, or privacy!",
-                    "Hmm, I'm not sure how to respond to that. Can you ask something else?"
-                };
+            "I'm sorry, I don't understand that. Could you rephrase your question?",
+            "I didn't quite get that. Try asking about passwords, scams, or privacy!",
+            "Hmm, I'm not sure how to respond to that. Can you ask something else?"
+        };
                 Random random = new Random();
                 string fallback_message = fallback_messages[random.Next(fallback_messages.Length)];
 
@@ -460,11 +482,16 @@ namespace cybersecurity_awareness_chatbot_p2
             }
         }
 
-        // ========== QUIZ MANAGER METHODS ==========
+        //
 
         private void initialize_quiz_manager()
         {
             quizManager = new quiz_manager(username);
+        }
+
+        private void initialize_nlp_processor()
+        {
+            nlpProcessor = new nlp_processor(reply, ignore, username, taskManager, quizManager);
         }
 
         private void open_quiz_grid()
