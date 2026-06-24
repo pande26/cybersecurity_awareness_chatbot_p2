@@ -33,6 +33,7 @@ namespace cybersecurity_awareness_chatbot_p2
         private task_manager taskManager;
         private quiz_manager quizManager;
         private nlp_processor nlpProcessor;
+        private activity_logger logger;
 
         // Variables to store the last detected topic for follow-up questions
         private string last_topic = "";
@@ -75,14 +76,17 @@ namespace cybersecurity_awareness_chatbot_p2
             username = name;
             displayer.set_username(name);
 
-            // Initializing task manager
+            // Initialize task manager
             initialize_task_manager();
 
-            // Initializing quiz manager
+            // Initialize quiz manager
             initialize_quiz_manager();
 
-            // Initializing NLP processor
+            // Initialize NLP processor
             initialize_nlp_processor();
+
+            // Initialize activity logger
+            initialize_activity_logger();
 
             string filename = "user_name.txt";
 
@@ -97,12 +101,18 @@ namespace cybersecurity_awareness_chatbot_p2
                 MessageBox.Show("Welcome " + name);
                 username_grid.Visibility = Visibility.Hidden;
                 chats_grid.Visibility = Visibility.Visible;
+
+                // Log welcome
+                logger.add_log("New user registered: " + name);
             }
             else
             {
                 MessageBox.Show("Welcome back " + name);
                 username_grid.Visibility = Visibility.Hidden;
                 chats_grid.Visibility = Visibility.Visible;
+
+                // Log returning user
+                logger.add_log("Returning user: " + name);
             }
         }
 
@@ -155,6 +165,9 @@ namespace cybersecurity_awareness_chatbot_p2
                 return;
             }
 
+            // LOG: User interaction
+            logger.add_log("User asked: " + questions);
+
             // CHECK FOR SENTIMENT
             string sentimentResult = sentimentDetector.process_sentiment(questions);
 
@@ -162,12 +175,12 @@ namespace cybersecurity_awareness_chatbot_p2
             {
                 display_user_message(questions);
                 display_bot_message(sentimentResult);
+                logger.add_log("Sentiment detected and responded");
                 question.Text = "";
                 return;
             }
 
-            //CHECK FOR NLP COMMANDS
-            // Initialize NLP processor if not already done
+            // CHECK FOR NLP COMMANDS
             if (nlpProcessor == null)
             {
                 initialize_nlp_processor();
@@ -179,11 +192,26 @@ namespace cybersecurity_awareness_chatbot_p2
             {
                 display_user_message(questions);
                 display_bot_message(nlpResult);
+                logger.add_log("NLP command processed: " + questions);
                 question.Text = "";
                 return;
             }
 
-            //CHECK FOR FOLLOW-UP QUESTIONS
+            // CHECK FOR ACTIVITY LOG COMMAND
+            if (questions.ToLower().Contains("show activity log") ||
+                questions.ToLower().Contains("what have you done") ||
+                questions.ToLower().Contains("summary") ||
+                questions.ToLower().Contains("recent actions"))
+            {
+                string log_result = logger.get_recent_activity();
+                display_user_message(questions);
+                display_bot_message(log_result);
+                logger.add_log("User viewed activity log");
+                question.Text = "";
+                return;
+            }
+
+            // CHECK FOR FOLLOW-UP QUESTIONS
             if (is_follow_up_question(questions) && !string.IsNullOrEmpty(last_topic))
             {
                 string follow_up_response = "";
@@ -209,13 +237,13 @@ namespace cybersecurity_awareness_chatbot_p2
                 {
                     display_user_message(questions);
                     display_bot_message(follow_up_response);
+                    logger.add_log("Follow-up response given for topic: " + last_topic);
                     question.Text = "";
                     return;
                 }
             }
 
-            //REGULAR RESPONSE PROCESSING
-            // Split the question into words and search for matches in the reply list
+            // REGULAR RESPONSE PROCESSING
             string[] words = questions.Split(' ');
             bool found = false;
             string message = "";
@@ -270,19 +298,21 @@ namespace cybersecurity_awareness_chatbot_p2
 
                 display_user_message(questions);
                 display_bot_message(message.TrimEnd('\n'));
+                logger.add_log("Regular response given for topic: " + last_topic);
             }
             else
             {
                 string[] fallback_messages = {
-            "I'm sorry, I don't understand that. Could you rephrase your question?",
-            "I didn't quite get that. Try asking about passwords, scams, or privacy!",
-            "Hmm, I'm not sure how to respond to that. Can you ask something else?"
-        };
+                    "I'm sorry, I don't understand that. Could you rephrase your question?",
+                    "I didn't quite get that. Try asking about passwords, scams, or privacy!",
+                    "Hmm, I'm not sure how to respond to that. Can you ask something else?"
+                };
                 Random random = new Random();
                 string fallback_message = fallback_messages[random.Next(fallback_messages.Length)];
 
                 display_user_message(questions);
                 display_bot_message(fallback_message);
+                logger.add_log("Fallback response given for unrecognized input");
             }
 
             question.Text = "";
@@ -327,8 +357,7 @@ namespace cybersecurity_awareness_chatbot_p2
             });
         }
 
-        // ========== TASK MANAGER METHODS ==========
-
+        //TASK MANAGER METHODS
         private void initialize_task_manager()
         {
             taskManager = new task_manager();
@@ -386,6 +415,24 @@ namespace cybersecurity_awareness_chatbot_p2
             if (result != null)
             {
                 show_task_bot_message(result);
+
+                // Log task action
+                if (userInput.ToLower().Contains("add task") || userInput.ToLower().Contains("create task"))
+                {
+                    logger.add_log("Task added: " + userInput);
+                }
+                else if (userInput.ToLower().Contains("complete task") || userInput.ToLower().Contains("mark done"))
+                {
+                    logger.add_log("Task completed: " + userInput);
+                }
+                else if (userInput.ToLower().Contains("delete task") || userInput.ToLower().Contains("remove task"))
+                {
+                    logger.add_log("Task deleted: " + userInput);
+                }
+                else if (userInput.ToLower().Contains("show tasks") || userInput.ToLower().Contains("view tasks"))
+                {
+                    logger.add_log("User viewed tasks");
+                }
             }
             else
             {
@@ -482,16 +529,11 @@ namespace cybersecurity_awareness_chatbot_p2
             }
         }
 
-        //
+        // QUIZ MANAGER METHODS
 
         private void initialize_quiz_manager()
         {
             quizManager = new quiz_manager(username);
-        }
-
-        private void initialize_nlp_processor()
-        {
-            nlpProcessor = new nlp_processor(reply, ignore, username, taskManager, quizManager);
         }
 
         private void open_quiz_grid()
@@ -537,6 +579,9 @@ namespace cybersecurity_awareness_chatbot_p2
                     string startMessage = quizManager.start_quiz(quiz_chats);
                     show_quiz_bot_message(startMessage);
                     update_quiz_score();
+
+                    // Log quiz start
+                    logger.add_log("Quiz started by user");
                 }
                 else
                 {
@@ -553,7 +598,12 @@ namespace cybersecurity_awareness_chatbot_p2
                 // Check if quiz is complete
                 if (!quizManager.is_quiz_active())
                 {
+                    int score = quizManager.get_current_question_index();
+                    int total = quizManager.get_total_questions();
                     show_quiz_bot_message("Quiz complete! You can start another quiz by typing 'Start quiz'.");
+
+                    // Log quiz completion with score
+                    logger.add_log("Quiz completed. Score: " + score + "/" + total);
                 }
             }
 
@@ -634,5 +684,19 @@ namespace cybersecurity_awareness_chatbot_p2
                 quiz_progress.Text = "Question " + (current + 1) + " of " + total;
             }
         }
+
+        //NLP processor
+        private void initialize_nlp_processor()
+        {
+            nlpProcessor = new nlp_processor(reply, ignore, username, taskManager, quizManager);
+        }
+
+        //activity logger
+        private void initialize_activity_logger()
+        {
+            logger = new activity_logger();
+            logger.add_log("Application started by user: " + username);
+        }
+
     }
 }
