@@ -8,148 +8,361 @@
         Title="Valerie" Height="450" Width="800"
         Background="#F5FBF9">
 
-    <Grid >
-        <!-- start of parent -->
-
-        <!-- grid page for logo -->
+    <Grid>
+        <!-- Grid page for logo -->
         <Grid x:Name="logo_grid" 
               Visibility="Visible" 
-              Background="#F5FBF9"
-              >
-            <!-- start of logo grid -->
+              Background="#F5FBF9">
+            
+            <Image Source="/logo.jpg" 
+                   Height="250" 
+                   Width="400" 
+                   Margin="0,0,0,150"
+                   />
+            
+            <Button 
+                Height="50" 
+                Width="200" 
+                Content="Start Valerie" 
+                Margin="0,300,0,0" 
+                Click="start_valerie" 
+                Background="#A2D2FF" 
+                Foreground="#1A4D8C"
+                FontWeight="Bold" 
+                BorderBrush="#7BAED4" 
+                BorderThickness="1" 
+                Cursor="Hand"/>
+        </Grid>
 
-            <!-- image logo displaying-->
+        <!-- Username grid -->
+        <Grid 
+            x:Name="username_grid" 
+            Visibility="Hidden" 
+            Background="#F5FBF9">
+            
             <Image 
                 Source="/logo.jpg" 
                 Height="250" 
                 Width="400" 
-                Margin="0,0,0,150" 
+                Margin="0,0,0,150"
                 />
-
-            <!-- button to start Valerie -->
-            <Button Height="50" 
-                    Width="200" 
-                    Content="Start Valerie" 
-                    Margin="0,300,0,0" 
-                    Click="start_valerie"
-                    Background="#A2D2FF" 
-                    Foreground="#1A4D8C"
-                    FontWeight="Bold"
-                    BorderBrush="#7BAED4"
-                    BorderThickness="1"
-                    Cursor="Hand"
-                    />
-        </Grid>
-        <!-- end of logo grid -->
-
-        <!-- username grid -->
-        <Grid x:Name="username_grid" 
-              Visibility="Hidden" 
-              Background="#F5FBF9"
-              >
-            <!-- start of username grid -->
-
-            <!-- image logo displaying-->
-            <Image 
-                Source="/logo.jpg" 
-                Height="250" 
-                Width="400" 
-                Margin="0,0,0,150" 
+            
+            <TextBox 
+                x:Name="user_name" 
+                Height="50" 
+                Width="270" 
+                Margin="0,190,0,0"
+                Background="White" 
+                Foreground="#333333" 
+                BorderBrush="#A2D2FF"
+                BorderThickness="2" 
+                FontSize="14" 
+                TextAlignment="Center"
                 />
-
-            <!-- TextBox for user input -->
-            <TextBox x:Name="user_name" 
-                     Height="50" 
-                     Width="270" 
-                     Margin="0,190,0,0"
-                     Background="White"
-                     Foreground="#333333"
-                     BorderBrush="#A2D2FF"
-                     BorderThickness="2"
-                     FontSize="14"
-                     TextAlignment="Center"
-                     />
-
-            <!-- hint text -->
-            <TextBlock Text="Enter your name to continue" 
-                       FontSize="12" 
-                       Foreground="#666666"
-                       HorizontalAlignment="Center"
-                       Margin="0,260,0,0"
-                       />
-
-            <!-- button to submit name -->
-            <Button Height="50" 
-                    Width="270" 
-                    Margin="0,340,0,0" 
-                    Content="Continue" 
-                    Click="submit_username"
-                    Background="#A2D2FF" 
-                    Foreground="#1A4D8C"
-                    FontWeight="Bold"
-                    BorderBrush="#7BAED4"
-                    BorderThickness="1"
-                    Cursor="Hand"
-                    />
+            
+            <TextBlock 
+                Text="Enter your name to continue" 
+                FontSize="12" 
+                Foreground="#666666"
+                HorizontalAlignment="Center" 
+                Margin="0,260,0,0"
+                />
+            ]
+            <Button 
+                Height="50" 
+                Width="270" 
+                Margin="0,340,0,0" 
+                Content="Continue"
+                Click="submit_username" 
+                Background="#A2D2FF" 
+                Foreground="#1A4D8C"
+                FontWeight="Bold" 
+                BorderBrush="#7BAED4" 
+                BorderThickness="1" 
+                Cursor="Hand"
+                />
             
         </Grid>
-        <!-- end of username grid -->
 
-        <!-- grid for the chats page -->
-        <Grid x:Name="chats_grid" 
-              Visibility="Hidden" 
-              Background="#E8F4F0"
-              >
-            <!-- start of chats grid -->
-
-            <!-- title header -->
-            <TextBlock Text="Valerie" 
-                       FontSize="14" 
-                       FontWeight="Bold" 
-                       Foreground="#1A4D8C"
-                       HorizontalAlignment="Center"
-                       Margin="0,10,0,0"
-                       />
-
-            <!-- list view to show chats -->
-            <ListView Height="320" 
-                      Margin="10,40,10,70" 
-                      x:Name="chats" 
-                      Background="White"
-                      BorderBrush="#A2D2FF"
-                      BorderThickness="2"
-                      />
-
-            <!-- questions textbox -->
-            <TextBox Height="45" 
-                     Width="470" 
-                     Margin="10,350,0,0" 
-                     x:Name="question"
-                     Background="White"
-                     Foreground="#333333"
-                     BorderBrush="#A2D2FF"
-                     BorderThickness="2"
-                     FontSize="13"
-                     VerticalContentAlignment="Center"
-                     />
-
-            <!-- button to submit the question -->
-            <Button Height="45" 
-                    Width="100" 
-                    Margin="490,350,0,0" 
-                    Content="Send" 
-                    Click="send" 
-                    Background="#A2D2FF" 
-                    Foreground="#1A4D8C"
-                    FontWeight="Bold"
-                    BorderBrush="#7BAED4"
-                    BorderThickness="1"
-                    Cursor="Hand"
-                    />
+        <!-- Chats grid -->
+        <Grid 
+            x:Name="chats_grid" 
+            Visibility="Hidden" 
+            Background="#E8F4F0">
+            
+            <TextBlock 
+                Text="Valerie" 
+                FontSize="14" 
+                FontWeight="Bold" 
+                Foreground="#1A4D8C"
+                HorizontalAlignment="Center" 
+                Margin="0,10,0,0"
+                />
+            
+            <ListView 
+                Height="320" 
+                Margin="10,40,10,70" 
+                x:Name="chats" 
+                Background="White"
+                BorderBrush="#A2D2FF" 
+                BorderThickness="2"
+                />
+            
+            <TextBox 
+                Height="45" 
+                Width="470" 
+                Margin="10,350,0,0" 
+                x:Name="question"
+                Background="White" 
+                Foreground="#333333" 
+                BorderBrush="#A2D2FF"
+                BorderThickness="2" 
+                FontSize="13" 
+                VerticalContentAlignment="Center"
+                />
+            
+            <Button 
+                Height="45" 
+                Width="100" 
+                Margin="490,350,0,0" 
+                Content="Send"
+                Click="send" 
+                Background="#A2D2FF" 
+                Foreground="#1A4D8C"
+                FontWeight="Bold" 
+                BorderBrush="#7BAED4" 
+                BorderThickness="1" 
+                Cursor="Hand"
+                />
+            
+            <Button
+                Height="45" 
+                Width="120" 
+                Margin="600,350,0,0" 
+                Content="Task Manager"
+                Click="open_task_manager" 
+                Background="#A2D2FF" 
+                Foreground="#1A4D8C"
+                FontWeight="Bold" 
+                BorderBrush="#7BAED4" 
+                BorderThickness="1" 
+                Cursor="Hand"
+                />
             
         </Grid>
-        <!-- end of chats grid -->
 
-    </Grid>
-    <!-- end of parent -->
+        <!-- Task Management Grid -->
+        <Grid 
+            x:Name="task_grid" 
+            Visibility="Hidden" 
+            Background="#E8F4F0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border 
+                Grid.Row="0" 
+                Background="#4A90D9" 
+                Height="50" 
+                CornerRadius="0,0,10,10">
+                
+                <Grid>
+                    <TextBlock 
+                        Text="Task Manager" 
+                        FontSize="18" 
+                        FontWeight="Bold" 
+                        Foreground="White"
+                        VerticalAlignment="Center" 
+                        Margin="20,0,0,0"
+                        />
+                    
+                    <Button 
+                        Content="X" 
+                        Width="35" 
+                        Height="35" 
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" 
+                        Margin="0,0,15,0" 
+                        Background="Transparent"
+                        Foreground="White" 
+                        FontSize="16" 
+                        FontWeight="Bold" 
+                        Cursor="Hand"
+                        Click="close_task_grid" 
+                        BorderThickness="0"
+                        />
+                    
+                </Grid>
+            </Border>
+
+            <Border 
+                Grid.Row="0" 
+                Background="#F5F5F5" 
+                Height="35" 
+                CornerRadius="0,0,10,10"
+                Margin="0,50,0,0"
+                >
+                
+                <TextBlock 
+                    x:Name="task_stats" 
+                    Text="Tasks: 0 pending" 
+                    FontSize="12"
+                    Foreground="#333333" 
+                    VerticalAlignment="Center" 
+                    Margin="20,0,0,0"
+                    />
+            </Border>
+
+            <ListView 
+                Grid.Row="1" 
+                x:Name="task_chats" 
+                Margin="10,60,10,10" 
+                Background="White"
+                BorderBrush="#A2D2FF" 
+                BorderThickness="2"/>
+
+            <Border 
+                Grid.Row="2" 
+                Background="#2D2D3D" 
+                Height="80" 
+                CornerRadius="10,10,0,0"
+                >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox 
+                        Grid.Column="0" 
+                        x:Name="task_question" 
+                        Height="45"
+                        Margin="15,15,10,20" 
+                        Background="White" 
+                        Foreground="#333333"
+                        BorderBrush="#A2D2FF" 
+                        BorderThickness="2" 
+                        FontSize="13"
+                        VerticalContentAlignment="Center"
+                        />
+
+                    <Button 
+                        Grid.Column="1" 
+                        Width="80" 
+                        Height="45" 
+                        Margin="0,15,15,20"
+                        Background="#4A90D9" 
+                        Foreground="White" 
+                        FontSize="14"
+                        FontWeight="Bold" 
+                        Content="Send" 
+                        Cursor="Hand"
+                        Click="send_task_command"
+                        />
+
+                    <Button 
+                        Grid.Column="2" 
+                        Width="100" 
+                        Height="45" 
+                        Margin="0,15,15,20"
+                        Background="#4A90D9" 
+                        Foreground="White" 
+                        FontSize="12"
+                        FontWeight="Bold" 
+                        Content="View Tasks" 
+                        Cursor="Hand"
+                        Click="view_all_tasks"
+                        />
+                    
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- View Tasks Grid -->
+        <Grid 
+            x:Name="viewTask_grid" 
+            Visibility="Hidden" 
+            Background="#E8F4F0">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border 
+                Grid.Row="0" 
+                Background="#4A90D9" 
+                Height="50" 
+                CornerRadius="0,0,10,10"
+                >
+                <Grid>
+                    <TextBlock 
+                        Text="Your Tasks" 
+                        FontSize="18" 
+                        FontWeight="Bold" 
+                        Foreground="White"
+                        VerticalAlignment="Center" 
+                        Margin="20,0,0,0"
+                        />
+                    
+                    <Button 
+                        Content="X" 
+                        Width="35" 
+                        Height="35" 
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" 
+                        Margin="0,0,15,0" 
+                        Background="Transparent"
+                        Foreground="White" 
+                        FontSize="16" 
+                        FontWeight="Bold" 
+                        Cursor="Hand"
+                        Click="close_view_task_grid" 
+                        BorderThickness="0"
+                        />
+                    
+                </Grid>
+            </Border>
+
+            <TextBlock 
+                Grid.Row="0" 
+                Text="Double-click a task to mark it as complete or delete it"
+                FontSize="12" 
+                Foreground="#666666" 
+                HorizontalAlignment="Center"
+                Margin="0,60,0,0"
+                />
+
+            <ListView
+                Grid.Row="1" 
+                x:Name="view_tasks" 
+                Margin="20,90,20,20" 
+                Background="White"
+                BorderBrush="#A2D2FF" 
+                BorderThickness="2" 
+                MouseDoubleClick="manage_task"
+                />
+
+            <Button 
+                Grid.Row="2" 
+                Height="45" 
+                Width="200" 
+                Margin="0,0,0,15"
+                HorizontalAlignment="Center" 
+                Background="#A2D2FF" 
+                Foreground="#1A4D8C"
+                FontWeight="Bold" 
+                Content="Back to Task Manager" 
+                Click="back_to_chats"
+                BorderBrush="#7BAED4" 
+                BorderThickness="1" 
+                Cursor="Hand"
+                />
+            
+        </Grid>
+    </Grid> 
 </Window>

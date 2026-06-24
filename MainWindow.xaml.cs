@@ -17,245 +17,179 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace cybersecurity_awareness_chatbot_p2
-{//start of namespace
-
+{
     public partial class MainWindow : Window
-    {//start of class
-
-        //creating an instance of ArrayList
+    {
+        // Creating an instance of ArrayList
         ArrayList reply = new ArrayList();
         ArrayList ignore = new ArrayList();
 
-        //declaring all class instances
+        // Declaring all class instances
         private response_finder finder;
         private response_handler handler;
         private topic_detector detector;
         private message_displayer displayer;
         private sentiment_detector sentimentDetector;
+        private task_manager taskManager;
 
-        //variables to store the last detected topic for follow-up questions
+        // Variables to store the last detected topic for follow-up questions
         private string last_topic = "";
         private string username = "";
 
         public MainWindow()
-        {//start of constructor
+        {
             InitializeComponent();
 
-            /*creating an instance for the class greet_user
-            with constructor*/
             new greet_user();
-
-            /*creating an instance for the respond class 
-             * without an object name*/
             new respond(reply, ignore) { };
 
-            //initializing all the class instances
+            // Initializing all the class instances
             finder = new response_finder(reply);
             handler = new response_handler(reply, ignore);
             detector = new topic_detector();
             displayer = new message_displayer();
             sentimentDetector = new sentiment_detector(reply, finder);
-
-        }//end of constructor
+        }
 
         private void start_valerie(object sender, RoutedEventArgs e)
-        {//start of method
-
-            //set logo grid to hidden
+        {
             logo_grid.Visibility = Visibility.Hidden;
-
-            //set username grid to visible
             username_grid.Visibility = Visibility.Visible;
-
-        }//end of method
+        }
 
         private void submit_username(object sender, RoutedEventArgs e)
-        {//start of submit_username() method
-
-            //temp variables
+        {
             string name = user_name.Text.ToString().Trim();
             bool found = check_name(name);
 
-            //checking for empty input
             if (string.IsNullOrWhiteSpace(name))
-            {//start of if statement
-
+            {
                 MessageBox.Show("Please enter your name before continuing...");
                 user_name.Focus();
                 return;
-
-            }//end of if statement
+            }
 
             // Store username
             username = name;
             displayer.set_username(name);
 
-            //temp variables
+            // Initialize task manager
+            initialize_task_manager();
+
             string filename = "user_name.txt";
 
-            //check if the file exists or not, the auto create
             if (!File.Exists(filename))
-            {//start of if statement
-
-                //auto create the file using AppendAllText() function
+            {
                 File.AppendAllText(filename, "auto_create\n");
+            }
 
-            }//end of if statement
-
-
-            //store the username into a text file
             if (!found)
-            {//start of if statement
-
-                //store the name in a test file
+            {
                 File.AppendAllText(filename, name + "\n");
-                MessageBox.Show("Welcome " + name );
-
-                //hide the username grid and set the chats grid to visible
+                MessageBox.Show("Welcome " + name);
                 username_grid.Visibility = Visibility.Hidden;
                 chats_grid.Visibility = Visibility.Visible;
-
-            }//end of if statement
+            }
             else
-            {//start of else statement 
-
-                //welcome back the user
-                MessageBox.Show("Welcome back " + name );
-
-                //set the username grid to be hidden
+            {
+                MessageBox.Show("Welcome back " + name);
                 username_grid.Visibility = Visibility.Hidden;
                 chats_grid.Visibility = Visibility.Visible;
+            }
+        }
 
-            }//end of else statement
-
-        }//end of submit_username() method
-
-        //method to check name for the user
         private Boolean check_name(string name)
-        {//start of check_name
-
-            //temporal variable for the text file part
+        {
             string find_name = "user_name.txt";
             bool name_found = false;
 
             if (File.Exists(find_name))
-            {//start of if statement
-
-                //one dimension array to read all the names from the text file
+            {
                 string[] names = File.ReadAllLines(find_name);
-
-                //foreach to loop through the 1D array and search for the current user_name
                 foreach (string search_name in names)
-                {//start of foreach
-
-                    //if statement to check if the username is found or not
+                {
                     if (search_name.ToLower() == name.ToLower())
-                    {//start of if statement
-
-                        //name_found must be true
+                    {
                         name_found = true;
                         break;
-
-                    }//end of if statement
-
-                }//end of foreach
-
-            }//end of if statement
-
-            //returning the status of if the user is found or not
+                    }
+                }
+            }
             return name_found;
+        }
 
-        }//end of check_name
-
-        //method to check if the question is a follow-up question
         private bool is_follow_up_question(string question)
-        {//start of is_follow_up_question
+        {
             string lower = question.ToLower();
 
-            // List of follow-up phrases
             string[] follow_up_phrases = {
                 "another tip", "another one", "more tips", "tell me more",
                 "explain more", "elaborate", "continue", "more information",
                 "what else", "anything else", "next tip", "another"
-                 };
+            };
 
             foreach (string phrase in follow_up_phrases)
-            {//start of foreach
-
+            {
                 if (lower.Contains(phrase))
                     return true;
-
-            }//end of foreach
+            }
             return false;
+        }
 
-        }//end of is_follow_up_question
-
-        //method to handle the send button click event
         private void send(object sender, RoutedEventArgs e)
-        {//start of send method 
-
-            //get the user's question
+        {
             string questions = question.Text.ToString().Trim();
 
-            //checking for empty input
             if (string.IsNullOrEmpty(questions))
-            {//start of if statement
-
+            {
                 error_method();
                 question.Text = "";
                 return;
+            }
 
-            }//end of if statement
-
-            //checking for sentiment in the user's question
+            // Checking for sentiment in the user's question
             string sentimentResult = sentimentDetector.process_sentiment(questions);
 
             if (!string.IsNullOrEmpty(sentimentResult))
-            {//start of if statement
+            {
                 display_user_message(questions);
                 display_bot_message(sentimentResult);
                 question.Text = "";
                 return;
+            }
 
-            }//end of if statement
-
-            //checking for follow-up question and if a topic was previously detected
+            // Checking for follow-up question and if a topic was previously detected
             if (is_follow_up_question(questions) && !string.IsNullOrEmpty(last_topic))
-            {//start of if statement
-
+            {
                 string follow_up_response = "";
 
-                // Get another response for the same topic
                 if (last_topic == "password")
-                {//start of if statement
+                {
                     follow_up_response = finder.get_response_for_topic("password");
-                }//end of if statement
+                }
                 else if (last_topic == "scam")
-                {//start of else if statement
+                {
                     follow_up_response = finder.get_response_for_topic("scam");
-                }//end of else if statement
+                }
                 else if (last_topic == "privacy")
-                {//start of else if statement
+                {
                     follow_up_response = finder.get_response_for_topic("privacy");
-                }//end of else if statement
+                }
                 else if (last_topic == "phishing")
-                {//start of else if statement
+                {
                     follow_up_response = finder.get_response_for_topic("phishing");
-                }//end of else if statement
+                }
 
-                //if a follow-up response is found, display it
                 if (!string.IsNullOrEmpty(follow_up_response))
-                {//start of if statement
+                {
                     display_user_message(questions);
                     display_bot_message(follow_up_response);
                     question.Text = "";
                     return;
+                }
+            }
 
-                }//end of if statement
-
-            }//end of if statement
-
-            //split the question into words and search for matches in the reply list
+            // Split the question into words and search for matches in the reply list
             string[] words = questions.Split(' ');
             bool found = false;
             string message = "";
@@ -263,7 +197,6 @@ namespace cybersecurity_awareness_chatbot_p2
             ArrayList per_word = new ArrayList();
             ArrayList answers_found = new ArrayList();
 
-            //loop through each word in the user's question
             foreach (string word in words)
             {
                 if (!ignore.Contains(word.ToLower()))
@@ -288,19 +221,16 @@ namespace cybersecurity_awareness_chatbot_p2
                 }
             }
 
-            //if answers are found, display them
             if (answers_found.Count > 0)
             {
                 foreach (string per_answer in answers_found)
                 {
-                    // Extract response without topic prefix
                     int space_index = per_answer.IndexOf(' ');
                     if (space_index > 0)
                         message += per_answer.Substring(space_index + 1) + "\n";
                     else
                         message += per_answer + "\n";
 
-                    // Store the topic for follow-ups
                     string lower_answer = per_answer.ToLower();
                     if (lower_answer.StartsWith("password"))
                         last_topic = "password";
@@ -317,12 +247,11 @@ namespace cybersecurity_awareness_chatbot_p2
             }
             else
             {
-                // Fallback responses when nothing matches
                 string[] fallback_messages = {
                     "I'm sorry, I don't understand that. Could you rephrase your question?",
                     "I didn't quite get that. Try asking about passwords, scams, or privacy!",
                     "Hmm, I'm not sure how to respond to that. Can you ask something else?"
-                        };
+                };
                 Random random = new Random();
                 string fallback_message = fallback_messages[random.Next(fallback_messages.Length)];
 
@@ -331,13 +260,10 @@ namespace cybersecurity_awareness_chatbot_p2
             }
 
             question.Text = "";
+        }
 
-        }//end of send method
-
-        // Helper method to display user message
         private void display_user_message(string message)
-        {//start of display_user_message
-
+        {
             string display_name = string.IsNullOrEmpty(username) ? "You" : username;
 
             chats.Items.Add(new TextBlock
@@ -349,13 +275,10 @@ namespace cybersecurity_awareness_chatbot_p2
                 Margin = new Thickness(5, 2, 5, 2)
             });
             chats.ScrollIntoView(chats.Items[chats.Items.Count - 1]);
+        }
 
-        }//end of display_user_message
-
-        // Helper method to display bot message
         private void display_bot_message(string message)
-        {//start of display_bot_message
-
+        {
             chats.Items.Add(new TextBlock
             {
                 Inlines = {
@@ -365,12 +288,10 @@ namespace cybersecurity_awareness_chatbot_p2
                 Margin = new Thickness(5, 2, 5, 2)
             });
             chats.ScrollIntoView(chats.Items[chats.Items.Count - 1]);
+        }
 
-        }//end of display_bot_message
-
-        // Error method for empty input
         private void error_method()
-        {//start of error_method
+        {
             chats.Items.Add(new TextBlock
             {
                 Inlines = {
@@ -378,9 +299,161 @@ namespace cybersecurity_awareness_chatbot_p2
                     new Run { Text = "Please enter a question!!", Foreground = Brushes.Red }
                 }
             });
+        }
 
-        }//end of error_method
+        // ========== TASK MANAGER METHODS ==========
 
-    }//end of class
+        private void initialize_task_manager()
+        {
+            taskManager = new task_manager();
+            int pendingCount = taskManager.get_pending_task_count();
+            if (pendingCount > 0)
+            {
+                displayer.show_bot_message(chats, "You have " + pendingCount + " pending tasks. Say 'Show my tasks' to view them.");
+            }
+        }
 
-}//end of namespace
+        private void open_task_grid()
+        {
+            logo_grid.Visibility = Visibility.Hidden;
+            username_grid.Visibility = Visibility.Hidden;
+            chats_grid.Visibility = Visibility.Hidden;
+            task_grid.Visibility = Visibility.Visible;
+
+            task_chats.Items.Clear();
+            show_task_bot_message("Welcome to Task Manager");
+            show_task_bot_message("You can say:");
+            show_task_bot_message("- Add task to [task name] - Create a new task");
+            show_task_bot_message("- Show my tasks - View all tasks");
+            show_task_bot_message("- Complete task [task name] - Mark task as done");
+            show_task_bot_message("- Delete task [task name] - Remove a task");
+
+            update_task_stats();
+        }
+
+        private void close_task_grid(object sender, RoutedEventArgs e)
+        {
+            task_grid.Visibility = Visibility.Hidden;
+            chats_grid.Visibility = Visibility.Visible;
+        }
+
+        private void close_view_task_grid(object sender, RoutedEventArgs e)
+        {
+            viewTask_grid.Visibility = Visibility.Hidden;
+            task_grid.Visibility = Visibility.Visible;
+        }
+
+        private void send_task_command(object sender, RoutedEventArgs e)
+        {
+            string userInput = task_question.Text.ToString().Trim();
+
+            if (string.IsNullOrEmpty(userInput))
+            {
+                show_task_error_message("Please enter a command.");
+                task_question.Text = "";
+                return;
+            }
+
+            show_task_user_message(userInput);
+            string result = taskManager.process_task_command(userInput, task_chats);
+
+            if (result != null)
+            {
+                show_task_bot_message(result);
+            }
+            else
+            {
+                show_task_bot_message("I didn't understand that. Please try one of the suggested commands.");
+            }
+
+            task_question.Text = "";
+            update_task_stats();
+        }
+
+        private void view_all_tasks(object sender, RoutedEventArgs e)
+        {
+            task_grid.Visibility = Visibility.Hidden;
+            viewTask_grid.Visibility = Visibility.Visible;
+            view_tasks.Items.Clear();
+            taskManager.load_tasks_for_view(view_tasks);
+        }
+
+        private void manage_task(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (view_tasks.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a task first.");
+                return;
+            }
+
+            string selectedTask = view_tasks.SelectedItem.ToString();
+            string result = taskManager.process_task_click(selectedTask);
+            MessageBox.Show(result, "Task Update", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            view_tasks.Items.Clear();
+            taskManager.load_tasks_for_view(view_tasks);
+            update_task_stats();
+        }
+
+        private void back_to_chats(object sender, RoutedEventArgs e)
+        {
+            task_grid.Visibility = Visibility.Visible;
+            viewTask_grid.Visibility = Visibility.Hidden;
+            update_task_stats();
+        }
+
+        private void open_task_manager(object sender, RoutedEventArgs e)
+        {
+            open_task_grid();
+        }
+
+        // Helper methods for task grid
+        private void show_task_user_message(string message)
+        {
+            task_chats.Items.Add(new TextBlock
+            {
+                Inlines = {
+                    new Run { Text = "You: ", Foreground = Brushes.DarkGreen, FontWeight = FontWeights.Bold },
+                    new Run { Text = message, Foreground = Brushes.Black }
+                },
+                Margin = new Thickness(5, 2, 5, 2)
+            });
+            task_chats.ScrollIntoView(task_chats.Items[task_chats.Items.Count - 1]);
+        }
+
+        private void show_task_bot_message(string message)
+        {
+            task_chats.Items.Add(new TextBlock
+            {
+                Inlines = {
+                    new Run { Text = "Valerie: ", Foreground = Brushes.DarkBlue, FontWeight = FontWeights.Bold },
+                    new Run { Text = message, Foreground = Brushes.Black }
+                },
+                Margin = new Thickness(5, 2, 5, 2)
+            });
+            task_chats.ScrollIntoView(task_chats.Items[task_chats.Items.Count - 1]);
+        }
+
+        private void show_task_error_message(string message)
+        {
+            task_chats.Items.Add(new TextBlock
+            {
+                Inlines = {
+                    new Run { Text = "Valerie: ", Foreground = Brushes.DarkBlue, FontWeight = FontWeights.Bold },
+                    new Run { Text = message, Foreground = Brushes.Red }
+                },
+                Margin = new Thickness(5, 2, 5, 2)
+            });
+            task_chats.ScrollIntoView(task_chats.Items[task_chats.Items.Count - 1]);
+        }
+
+        private void update_task_stats()
+        {
+            if (taskManager != null)
+            {
+                int pendingCount = taskManager.get_pending_task_count();
+                task_stats.Text = "Tasks: " + pendingCount + " pending";
+            }
+        }
+    }
+}
