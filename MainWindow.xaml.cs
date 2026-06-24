@@ -31,6 +31,7 @@ namespace cybersecurity_awareness_chatbot_p2
         private message_displayer displayer;
         private sentiment_detector sentimentDetector;
         private task_manager taskManager;
+        private quiz_manager quizManager;
 
         // Variables to store the last detected topic for follow-up questions
         private string last_topic = "";
@@ -75,6 +76,9 @@ namespace cybersecurity_awareness_chatbot_p2
 
             // Initialize task manager
             initialize_task_manager();
+
+            // Initialize quiz manager
+            initialize_quiz_manager();
 
             string filename = "user_name.txt";
 
@@ -453,6 +457,154 @@ namespace cybersecurity_awareness_chatbot_p2
             {
                 int pendingCount = taskManager.get_pending_task_count();
                 task_stats.Text = "Tasks: " + pendingCount + " pending";
+            }
+        }
+
+        // ========== QUIZ MANAGER METHODS ==========
+
+        private void initialize_quiz_manager()
+        {
+            quizManager = new quiz_manager(username);
+        }
+
+        private void open_quiz_grid()
+        {
+            logo_grid.Visibility = Visibility.Hidden;
+            username_grid.Visibility = Visibility.Hidden;
+            chats_grid.Visibility = Visibility.Hidden;
+            task_grid.Visibility = Visibility.Hidden;
+            viewTask_grid.Visibility = Visibility.Hidden;
+            quiz_grid.Visibility = Visibility.Visible;
+
+            quiz_chats.Items.Clear();
+            show_quiz_bot_message("Welcome to the Cybersecurity Quiz!");
+            show_quiz_bot_message("Type 'Start quiz' to begin testing your cybersecurity knowledge.");
+            show_quiz_bot_message("You will answer " + quizManager.get_total_questions() + " questions.");
+            show_quiz_bot_message("Good luck!");
+        }
+
+        private void close_quiz_grid(object sender, RoutedEventArgs e)
+        {
+            quiz_grid.Visibility = Visibility.Hidden;
+            chats_grid.Visibility = Visibility.Visible;
+        }
+
+        private void send_quiz_answer(object sender, RoutedEventArgs e)
+        {
+            string userInput = quiz_question.Text.ToString().Trim();
+
+            if (string.IsNullOrEmpty(userInput))
+            {
+                show_quiz_error_message("Please enter an answer.");
+                quiz_question.Text = "";
+                return;
+            }
+
+            show_quiz_user_message(userInput);
+
+            // Check if quiz is active
+            if (!quizManager.is_quiz_active())
+            {
+                if (userInput.ToLower().Contains("start quiz") || userInput.ToLower().Contains("start"))
+                {
+                    string startMessage = quizManager.start_quiz(quiz_chats);
+                    show_quiz_bot_message(startMessage);
+                    update_quiz_score();
+                }
+                else
+                {
+                    show_quiz_bot_message("The quiz is not active. Type 'Start quiz' to begin.");
+                }
+            }
+            else
+            {
+                // Process answer
+                string result = quizManager.process_answer(userInput, quiz_chats);
+                show_quiz_bot_message(result);
+                update_quiz_score();
+
+                // Check if quiz is complete
+                if (!quizManager.is_quiz_active())
+                {
+                    show_quiz_bot_message("Quiz complete! You can start another quiz by typing 'Start quiz'.");
+                }
+            }
+
+            quiz_question.Text = "";
+        }
+
+        private void end_quiz(object sender, RoutedEventArgs e)
+        {
+            if (quizManager.is_quiz_active())
+            {
+                quizManager = new quiz_manager(username);
+                show_quiz_bot_message("Quiz ended. Type 'Start quiz' to begin a new one.");
+                update_quiz_score();
+            }
+            else
+            {
+                show_quiz_bot_message("No quiz is currently active. Type 'Start quiz' to begin.");
+            }
+        }
+
+        private void open_quiz(object sender, RoutedEventArgs e)
+        {
+            // Initialize quiz manager if not already done
+            if (quizManager == null)
+            {
+                initialize_quiz_manager();
+            }
+            open_quiz_grid();
+        }
+
+        // Helper methods for quiz grid
+        private void show_quiz_user_message(string message)
+        {
+            quiz_chats.Items.Add(new TextBlock
+            {
+                Inlines = {
+                    new Run { Text = "You: ", Foreground = Brushes.DarkGreen, FontWeight = FontWeights.Bold },
+                    new Run { Text = message, Foreground = Brushes.Black }
+                },
+                Margin = new Thickness(5, 2, 5, 2)
+            });
+            quiz_chats.ScrollIntoView(quiz_chats.Items[quiz_chats.Items.Count - 1]);
+        }
+
+        private void show_quiz_bot_message(string message)
+        {
+            quiz_chats.Items.Add(new TextBlock
+            {
+                Inlines = {
+                    new Run { Text = "Valerie: ", Foreground = Brushes.DarkBlue, FontWeight = FontWeights.Bold },
+                    new Run { Text = message, Foreground = Brushes.Black }
+                },
+                Margin = new Thickness(5, 2, 5, 2)
+            });
+            quiz_chats.ScrollIntoView(quiz_chats.Items[quiz_chats.Items.Count - 1]);
+        }
+
+        private void show_quiz_error_message(string message)
+        {
+            quiz_chats.Items.Add(new TextBlock
+            {
+                Inlines = {
+                    new Run { Text = "Valerie: ", Foreground = Brushes.DarkBlue, FontWeight = FontWeights.Bold },
+                    new Run { Text = message, Foreground = Brushes.Red }
+                },
+                Margin = new Thickness(5, 2, 5, 2)
+            });
+            quiz_chats.ScrollIntoView(quiz_chats.Items[quiz_chats.Items.Count - 1]);
+        }
+
+        private void update_quiz_score()
+        {
+            if (quizManager != null)
+            {
+                int current = quizManager.get_current_question_index();
+                int total = quizManager.get_total_questions();
+                quiz_score.Text = "Score: " + current + "/" + total;
+                quiz_progress.Text = "Question " + (current + 1) + " of " + total;
             }
         }
     }
