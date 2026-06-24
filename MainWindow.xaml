@@ -5,250 +5,446 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:cybersecurity_awareness_chatbot_p2"
         mc:Ignorable="d"
-        Title="Valerie" Height="450" Width="800"
-        Background="#F5FBF9">
+        Title="Valerie - Cybersecurity Assistant" 
+        Height="550" 
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="#F0F4F8">
+
+    <Window.Resources>
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#4A90D9"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="#357ABD" 
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#357ABD"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#2C5F8A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Green Button Style -->
+        <Style x:Key="GreenButton" TargetType="Button">
+            <Setter Property="Background" Value="#34A853"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="#2D8F47" 
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2D8F47"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Orange Button Style -->
+        <Style x:Key="OrangeButton" TargetType="Button">
+            <Setter Property="Background" Value="#E67E22"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="#D35400" 
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D35400"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Red Button Style -->
+        <Style x:Key="RedButton" TargetType="Button">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="#C0392B" 
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Modern TextBox Style -->
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#4A90D9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CaretBrush" Value="#4A90D9"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="12,0,12,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListView Style -->
+        <Style x:Key="ModernListView" TargetType="ListView">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#4A90D9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Circular Logo Style -->
+        <Style x:Key="CircularImage" TargetType="Image">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+        </Style>
+    </Window.Resources>
 
     <Grid>
-        <!-- Grid page for logo -->
-        <Grid 
-            x:Name="logo_grid" 
-            Visibility="Visible" 
-            Background="#F5FBF9">
-            
-            <Image 
-                Source="/logo.jpg" 
-                Height="250" 
-                Width="400" 
-                Margin="0,0,0,150"
-                />
-            
-            <Button 
-                Height="50" 
-                Width="200" 
-                Content="Start Valerie" 
-                Margin="0,300,0,0" 
-                Click="start_valerie" 
-                Background="#A2D2FF" 
-                Foreground="#1A4D8C"
-                FontWeight="Bold" 
-                BorderBrush="#7BAED4" 
-                BorderThickness="1" 
-                Cursor="Hand"
-                />
-            
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#F0F4F8" Offset="0.0"/>
+                <GradientStop Color="#E2E8F0" Offset="0.5"/>
+                <GradientStop Color="#F0F4F8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- ============================================ -->
+        <!-- LOGO GRID - Landing Page                     -->
+        <!-- ============================================ -->
+        <Grid x:Name="logo_grid" Visibility="Visible" Background="#F0F4F8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.RowSpan="2"
+                    Width="380" Height="240" 
+                    CornerRadius="20" Background="White"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Margin="0,-30,0,0">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="8" Opacity="0.15"/>
+                </Border.Effect>
+                <Image Source="/logo.jpg" Width="340" Height="200" Margin="20,20,20,20"/>
+            </Border>
+
+            <TextBlock Grid.Row="1" 
+                       Text="CYBERSECURITY AWARENESS BOT" 
+                       FontSize="22" FontWeight="Bold" Foreground="#1A4D8C"
+                       HorizontalAlignment="Center" Margin="0,230,0,0"/>
+
+            <TextBlock Grid.Row="1" 
+                       Text="Your personal guide to online safety" 
+                       FontSize="14" Foreground="#666666"
+                       HorizontalAlignment="Center" Margin="0,260,0,0"/>
+
+            <Button Grid.Row="2" Style="{StaticResource ModernButton}"
+                    Width="220" Height="50" FontSize="16"
+                    Content="START VALERIE"
+                    HorizontalAlignment="Center" Margin="0,20,0,0"
+                    Click="start_valerie"/>
         </Grid>
 
-        <!-- Username grid -->
-        <Grid 
-            x:Name="username_grid" 
-            Visibility="Hidden" 
-            Background="#F5FBF9">
-            
-            <Image
-                Source="/logo.jpg" 
-                Height="250" 
-                Width="400" 
-                Margin="0,0,0,150"
-                />
-            
-            <TextBox 
-                x:Name="user_name" 
-                Height="50" 
-                Width="270" 
-                Margin="0,190,0,0"
-                Background="White" 
-                Foreground="#333333" 
-                BorderBrush="#A2D2FF"
-                BorderThickness="2" 
-                FontSize="14" 
-                TextAlignment="Center"
-                />
-            
-            <TextBlock 
-                Text="Enter your name to continue" 
-                FontSize="12" 
-                Foreground="#666666"
-                HorizontalAlignment="Center" 
-                Margin="0,260,0,0"
-                />
-            
-            <Button 
-                Height="50" 
-                Width="270" 
-                Margin="0,340,0,0" 
-                Content="Continue"
-                Click="submit_username" 
-                Background="#A2D2FF" 
-                Foreground="#1A4D8C"
-                FontWeight="Bold" 
-                BorderBrush="#7BAED4" 
-                BorderThickness="1" 
-                Cursor="Hand"
-                />
-            
+        <!-- ============================================ -->
+        <!-- USERNAME GRID - Name Collection Page         -->
+        <!-- ============================================ -->
+        <Grid x:Name="username_grid" Visibility="Hidden" Background="#F0F4F8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.RowSpan="2"
+                    Width="280" Height="180" 
+                    CornerRadius="20" Background="White"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Margin="0,-40,0,0">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.12"/>
+                </Border.Effect>
+                <Image Source="/logo.jpg" Width="240" Height="140" Margin="20,20,20,20"/>
+            </Border>
+
+            <TextBlock Grid.Row="1" 
+                       Text="Welcome! Let's get started" 
+                       FontSize="20" FontWeight="Bold" Foreground="#1A4D8C"
+                       HorizontalAlignment="Center" Margin="0,180,0,0"/>
+
+            <TextBlock Grid.Row="1" 
+                       Text="Enter your name to continue" 
+                       FontSize="14" Foreground="#666666"
+                       HorizontalAlignment="Center" Margin="0,210,0,0"/>
+
+            <TextBox Grid.Row="1" x:Name="user_name" 
+                     Style="{StaticResource ModernTextBox}"
+                     Width="320" Height="50" FontSize="16" 
+                     HorizontalAlignment="Center" Margin="0,245,0,0"/>
+
+            <TextBlock Grid.Row="1" 
+                       Text="Your name will be saved for next time" 
+                       FontSize="11" Foreground="#999999"
+                       HorizontalAlignment="Center" Margin="0,305,0,0"/>
+
+            <Button Grid.Row="2" Style="{StaticResource ModernButton}"
+                    Width="260" Height="50" FontSize="16"
+                    Content="CONTINUE"
+                    HorizontalAlignment="Center" Margin="0,15,0,0"
+                    Click="submit_username"/>
         </Grid>
 
-        <!-- Chats grid -->
-        <Grid
-            x:Name="chats_grid" 
-            Visibility="Hidden" 
-            Background="#E8F4F0">
-            
-            <TextBlock 
-                Text="Valerie" 
-                FontSize="14" 
-                FontWeight="Bold" 
-                Foreground="#1A4D8C"
-                HorizontalAlignment="Center" 
-                Margin="0,10,0,0"
-                />
-            
-            <ListView
-                Height="320" 
-                Margin="10,40,10,70" 
-                x:Name="chats" 
-                Background="White"
-                BorderBrush="#A2D2FF" 
-                BorderThickness="2"
-                />
-            
-            <TextBox 
-                Height="45" 
-                Width="470" 
-                Margin="0,350,250,0" 
-                x:Name="question"
-                Background="White" 
-                Foreground="#333333" 
-                BorderBrush="#A2D2FF"
-                BorderThickness="2" 
-                FontSize="13" 
-                VerticalContentAlignment="Center"
-                />
-            
-            <Button 
-                Height="45" 
-                Width="100" 
-                Margin="490,350,170,0" 
-                Content="Send"
-                Click="send" 
-                Background="#A2D2FF" 
-                Foreground="#1A4D8C"
-                FontWeight="Bold" 
-                BorderBrush="#7BAED4" 
-                BorderThickness="1" 
-                Cursor="Hand"
-                />
-            
-            <Button 
-                Height="45" 
-                Width="120" 
-                Margin="600,350,80,0" 
-                Content="Task Manager"
-                Click="open_task_manager" 
-                Background="#A2D2FF" 
-                Foreground="#1A4D8C"
-                FontWeight="Bold" 
-                BorderBrush="#7BAED4" 
-                BorderThickness="1" 
-                Cursor="Hand"
-                />
-            
-            <Button 
-                Height="45" 
-                Width="80" 
-                Margin="700,350,0,0" 
-                Content="Quiz"
-                Click="open_quiz" 
-                Background="#A2D2FF" 
-                Foreground="#1A4D8C"
-                FontWeight="Bold" 
-                BorderBrush="#7BAED4" 
-                BorderThickness="1" 
-                Cursor="Hand"
-                />
-            
-        </Grid>
-
-        <!-- Task Management Grid -->
-        <Grid 
-            x:Name="task_grid" 
-            Visibility="Hidden" 
-            Background="#E8F4F0">
-            
+        <!-- ============================================ -->
+        <!-- CHATS GRID - Main Conversation Page          -->
+        <!-- ============================================ -->
+        <Grid x:Name="chats_grid" Visibility="Hidden" Background="#F0F4F8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border 
-                Grid.Row="0" 
-                Background="#4A90D9" 
-                Height="50" 
-                CornerRadius="0,0,10,10">
-                
+            <!-- Header with Circular Logo (No Background) -->
+            <Border Grid.Row="0" Height="70" CornerRadius="0,0,20,20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#4A90D9" Offset="0.0"/>
+                        <GradientStop Color="#357ABD" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.2"/>
+                </Border.Effect>
                 <Grid>
-                    <TextBlock 
-                        Text="Task Manager" 
-                        FontSize="18" 
-                        FontWeight="Bold" 
-                        Foreground="White"
-                        VerticalAlignment="Center" 
-                        Margin="20,0,0,0"
-                        />
-                    
-                    <Button 
-                        Content="X" 
-                        Width="35" 
-                        Height="35" 
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center" 
-                        Margin="0,0,15,0" 
-                        Background="Transparent"
-                        Foreground="White" 
-                        FontSize="16" 
-                        FontWeight="Bold" 
-                        Cursor="Hand"
-                        Click="close_task_grid" 
-                        BorderThickness="0"
-                        />
-                    
+                    <!-- Circular Logo Only (No Background) -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15,0,0,0">
+                        <!-- Circular Image - Clip to Circle -->
+                        <Image Source="/logo.jpg" 
+                               Width="40" Height="40" 
+                               Margin="0,0,12,0">
+                            <Image.Clip>
+                                <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20"/>
+                            </Image.Clip>
+                        </Image>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Valerie" 
+                                       FontSize="20" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text=" - Cybersecurity Assistant" 
+                                       FontSize="15" Foreground="#D6E6F5"
+                                       Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                                VerticalAlignment="Center" Margin="0,0,15,0">
+                        <Button Content="T" Width="40" Height="40"
+                                Background="Transparent" Foreground="White"
+                                FontSize="16" FontWeight="Bold" Cursor="Hand"
+                                Click="open_task_manager" BorderThickness="0"
+                                Margin="0,0,5,0"/>
+                        <Button Content="Q" Width="40" Height="40"
+                                Background="Transparent" Foreground="White"
+                                FontSize="16" FontWeight="Bold" Cursor="Hand"
+                                Click="open_quiz" BorderThickness="0"
+                                Margin="0,0,5,0"/>
+                        <Button Content="✖" Width="35" Height="35"
+                                Background="Transparent" Foreground="White"
+                                FontSize="18" FontWeight="Bold" Cursor="Hand"
+                                Click="close_application" BorderThickness="0"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <Border 
-                Grid.Row="0" 
-                Background="#F5F5F5" 
-                Height="35" 
-                CornerRadius="0,0,10,10"
-                Margin="0,50,0,0">
-                
-                <TextBlock 
-                    x:Name="task_stats" 
-                    Text="Tasks: 0 pending" 
-                    FontSize="12"
-                    Foreground="#333333" 
-                    VerticalAlignment="Center" 
-                    Margin="20,0,0,0"
-                    />
-                
+            <!-- Chat ListView -->
+            <ListView Grid.Row="1" x:Name="chats" 
+                      Margin="15,15,15,10"
+                      Background="#F8FAFC" BorderBrush="#4A90D9"
+                      BorderThickness="2" 
+                      Style="{StaticResource ModernListView}">
+                <ListView.Effect>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.08"/>
+                </ListView.Effect>
+            </ListView>
+
+            <!-- Input Area -->
+            <Border Grid.Row="2" Background="White" Height="80" CornerRadius="15,15,0,0">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="-3" Opacity="0.08"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" x:Name="question" 
+                             Style="{StaticResource ModernTextBox}"
+                             Height="50" Margin="15,15,10,15"
+                             FontSize="14" VerticalContentAlignment="Center"/>
+
+                    <Button Grid.Column="1" Width="100" Height="50"
+                            Margin="0,15,15,15"
+                            Background="#4A90D9" Foreground="White"
+                            FontSize="14" FontWeight="Bold" Content="Send"
+                            Cursor="Hand" Click="send">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                                        CornerRadius="12">
+                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ============================================ -->
+        <!-- TASK MANAGER GRID                            -->
+        <!-- ============================================ -->
+        <Grid x:Name="task_grid" Visibility="Hidden" Background="#F0F4F8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Height="65" CornerRadius="0,0,20,20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#4A90D9" Offset="0.0"/>
+                        <GradientStop Color="#357ABD" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.2"/>
+                </Border.Effect>
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                        <TextBlock Text="📋" FontSize="20" Foreground="White"/>
+                        <TextBlock Text=" Task Manager" 
+                                   FontSize="18" FontWeight="Bold" Foreground="White"
+                                   Margin="5,0,0,0"/>
+                        <TextBlock Text=" - Manage your cybersecurity tasks" 
+                                   FontSize="14" Foreground="#D6E6F5"
+                                   Margin="5,0,0,0"/>
+                    </StackPanel>
+
+                    <Button Content="✖" Width="35" Height="35"
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="0,0,15,0" Background="Transparent"
+                            Foreground="White" FontSize="18" FontWeight="Bold"
+                            Cursor="Hand" Click="close_task_grid" BorderThickness="0"/>
+                </Grid>
             </Border>
 
-            <ListView 
-                Grid.Row="1" 
-                x:Name="task_chats" 
-                Margin="10,60,10,10" 
-                Background="White"
-                BorderBrush="#A2D2FF" 
-                BorderThickness="2"
-                />
+            <Border Grid.Row="0" Background="#F5F7FA" Height="40" CornerRadius="0,0,12,12"
+                    Margin="15,70,15,0">
+                <Grid>
+                    <TextBlock x:Name="task_stats" Text="Tasks: 0 pending" 
+                               FontSize="13" FontWeight="SemiBold" Foreground="#1A4D8C"
+                               VerticalAlignment="Center" Margin="20,0,0,0"/>
+                    <TextBlock Text="Double-click a task to manage it" 
+                               FontSize="12" Foreground="#999999"
+                               VerticalAlignment="Center" HorizontalAlignment="Right" 
+                               Margin="0,0,20,0"/>
+                </Grid>
+            </Border>
 
-            <Border 
-                Grid.Row="2" 
-                Background="#2D2D3D" 
-                Height="80" 
-                CornerRadius="10,10,0,0">
-                
+            <ListView Grid.Row="1" x:Name="task_chats" 
+                      Margin="15,80,15,10"
+                      Background="#F8FAFC" BorderBrush="#4A90D9"
+                      BorderThickness="2" 
+                      Style="{StaticResource ModernListView}"/>
+
+            <Border Grid.Row="2" Background="White" Height="80" CornerRadius="15,15,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -256,226 +452,143 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox 
-                        Grid.Column="0" 
-                        x:Name="task_question" 
-                        Height="45"
-                        Margin="15,15,10,20" 
-                        Background="White" 
-                        Foreground="#333333"
-                        BorderBrush="#A2D2FF" 
-                        BorderThickness="2" 
-                        FontSize="13"
-                        VerticalContentAlignment="Center"
-                        />
+                    <TextBox Grid.Column="0" x:Name="task_question" 
+                             Style="{StaticResource ModernTextBox}"
+                             Height="50" Margin="15,15,10,15"
+                             FontSize="14" VerticalContentAlignment="Center"/>
 
-                    <Button 
-                        Grid.Column="1" 
-                        Width="80" 
-                        Height="45" 
-                        Margin="0,15,15,20"
-                        Background="#4A90D9" 
-                        Foreground="White" 
-                        FontSize="14"
-                        FontWeight="Bold" 
-                        Content="Send" 
-                        Cursor="Hand"
-                        Click="send_task_command"
-                        />
+                    <Button Grid.Column="1" Width="80" Height="50"
+                            Margin="0,15,10,15"
+                            Style="{StaticResource ModernButton}"
+                            Content="Send"
+                            Click="send_task_command"/>
 
-                    <Button 
-                        Grid.Column="2" 
-                        Width="100" 
-                        Height="45" 
-                        Margin="0,15,15,20"
-                        Background="#4A90D9" 
-                        Foreground="White" 
-                        FontSize="12"
-                        FontWeight="Bold" 
-                        Content="View Tasks" 
-                        Cursor="Hand"
-                        Click="view_all_tasks"
-                        />
-                    
+                    <Button Grid.Column="2" Width="110" Height="50"
+                            Margin="0,15,15,15"
+                            Style="{StaticResource GreenButton}"
+                            Content="View Tasks"
+                            Click="view_all_tasks"/>
                 </Grid>
             </Border>
         </Grid>
 
-        <!-- View Tasks Grid -->
-        <Grid 
-            x:Name="viewTask_grid" 
-            Visibility="Hidden" 
-            Background="#E8F4F0">
-            
+        <!-- ============================================ -->
+        <!-- VIEW TASKS GRID                             -->
+        <!-- ============================================ -->
+        <Grid x:Name="viewTask_grid" Visibility="Hidden" Background="#F0F4F8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border 
-                Grid.Row="0" 
-                Background="#4A90D9" 
-                Height="50" 
-                CornerRadius="0,0,10,10">
-                
+            <Border Grid.Row="0" Height="65" CornerRadius="0,0,20,20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#4A90D9" Offset="0.0"/>
+                        <GradientStop Color="#357ABD" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.2"/>
+                </Border.Effect>
                 <Grid>
-                    <TextBlock 
-                        Text="Your Tasks" 
-                        FontSize="18" 
-                        FontWeight="Bold" 
-                        Foreground="White"
-                        VerticalAlignment="Center" 
-                        Margin="20,0,0,0"
-                        />
-                    
-                    <Button 
-                        Content="X" 
-                        Width="35" 
-                        Height="35" 
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center" 
-                        Margin="0,0,15,0" 
-                        Background="Transparent"
-                        Foreground="White" 
-                        FontSize="16" 
-                        FontWeight="Bold" 
-                        Cursor="Hand"
-                        Click="close_view_task_grid" 
-                        BorderThickness="0"
-                        />
-                    
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                        <TextBlock Text="📋" FontSize="20" Foreground="White"/>
+                        <TextBlock Text=" Your Tasks" 
+                                   FontSize="18" FontWeight="Bold" Foreground="White"
+                                   Margin="5,0,0,0"/>
+                    </StackPanel>
+
+                    <Button Content="✖" Width="35" Height="35"
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="0,0,15,0" Background="Transparent"
+                            Foreground="White" FontSize="18" FontWeight="Bold"
+                            Cursor="Hand" Click="close_view_task_grid" BorderThickness="0"/>
                 </Grid>
             </Border>
 
-            <TextBlock 
-                Grid.Row="0" 
-                Text="Double-click a task to mark it as complete or delete it"
-                FontSize="12" 
-                Foreground="#666666" 
-                HorizontalAlignment="Center"
-                Margin="0,60,0,0"
-                />
+            <Border Grid.Row="0" Background="#F5F7FA" Height="35" CornerRadius="0,0,12,12"
+                    Margin="15,70,15,0">
+                <TextBlock Text="Double-click a task to mark it as complete or delete it" 
+                           FontSize="12" Foreground="#666666"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
 
-            <ListView 
-                Grid.Row="1" 
-                x:Name="view_tasks" 
-                Margin="20,90,20,20" 
-                Background="White"
-                BorderBrush="#A2D2FF" 
-                BorderThickness="2" 
-                MouseDoubleClick="manage_task"
-                />
+            <ListView Grid.Row="1" x:Name="view_tasks" 
+                      Margin="15,80,15,10"
+                      Background="#F8FAFC" BorderBrush="#4A90D9"
+                      BorderThickness="2" 
+                      Style="{StaticResource ModernListView}"
+                      MouseDoubleClick="manage_task"/>
 
-            <Button 
-                Grid.Row="2" 
-                Height="45" 
-                Width="200" 
-                Margin="0,0,0,15"
-                HorizontalAlignment="Center" 
-                Background="#A2D2FF" 
-                Foreground="#1A4D8C"
-                FontWeight="Bold" 
-                Content="Back to Task Manager" 
-                Click="back_to_chats"
-                BorderBrush="#7BAED4" 
-                BorderThickness="1" 
-                Cursor="Hand"
-                />
-            
+            <Button Grid.Row="2" Height="45" Width="200"
+                    Margin="0,10,0,15" HorizontalAlignment="Center"
+                    Background="#A2D2FF" Foreground="#1A4D8C"
+                    FontSize="14" FontWeight="Bold" Content="Back to Task Manager"
+                    Click="back_to_chats" BorderBrush="#7BAED4" 
+                    BorderThickness="1" Cursor="Hand"/>
         </Grid>
 
-        <!-- Quiz Grid -->
-        <Grid 
-            x:Name="quiz_grid" 
-            Visibility="Hidden" 
-            Background="#E8F4F0">
-            
+        <!-- ============================================ -->
+        <!-- QUIZ GRID                                   -->
+        <!-- ============================================ -->
+        <Grid x:Name="quiz_grid" Visibility="Hidden" Background="#F0F4F8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border 
-                Grid.Row="0" 
-                Background="#4A90D9" 
-                Height="50" 
-                CornerRadius="0,0,10,10">
-                
+            <Border Grid.Row="0" Height="65" CornerRadius="0,0,20,20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#E67E22" Offset="0.0"/>
+                        <GradientStop Color="#D35400" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.2"/>
+                </Border.Effect>
                 <Grid>
-                    <TextBlock 
-                        Text="Cybersecurity Quiz" 
-                        FontSize="18" 
-                        FontWeight="Bold" 
-                        Foreground="White"
-                        VerticalAlignment="Center" 
-                        Margin="20,0,0,0"
-                        />
-                    
-                    <Button 
-                        Content="X" Width="35" 
-                        Height="35" 
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center" 
-                        Margin="0,0,15,0" 
-                        Background="Transparent"
-                        Foreground="White" 
-                        FontSize="16" 
-                        FontWeight="Bold" 
-                        Cursor="Hand"
-                        Click="close_quiz_grid" 
-                        BorderThickness="0"
-                        />
-                    
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                        <TextBlock Text="❓" FontSize="20" Foreground="White"/>
+                        <TextBlock Text=" Cybersecurity Quiz" 
+                                   FontSize="18" FontWeight="Bold" Foreground="White"
+                                   Margin="5,0,0,0"/>
+                        <TextBlock Text=" - Test your knowledge" 
+                                   FontSize="14" Foreground="#FDEBD0"
+                                   Margin="5,0,0,0"/>
+                    </StackPanel>
+
+                    <Button Content="✖" Width="35" Height="35"
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="0,0,15,0" Background="Transparent"
+                            Foreground="White" FontSize="18" FontWeight="Bold"
+                            Cursor="Hand" Click="close_quiz_grid" BorderThickness="0"/>
                 </Grid>
             </Border>
 
-            <Border 
-                Grid.Row="0" 
-                Background="#F5F5F5" 
-                Height="35" 
-                CornerRadius="0,0,10,10"
-                Margin="0,50,0,0">
-                
+            <Border Grid.Row="0" Background="#F5F7FA" Height="40" CornerRadius="0,0,12,12"
+                    Margin="15,70,15,0">
                 <Grid>
-                    <TextBlock 
-                        x:Name="quiz_score" 
-                        Text="Score: 0/0" 
-                        FontSize="12"
-                        Foreground="#333333" 
-                        VerticalAlignment="Center" 
-                        Margin="20,0,0,0"
-                        />
-                    
-                    <TextBlock 
-                        x:Name="quiz_progress" 
-                        Text="Question 0 of 0" 
-                        FontSize="12"
-                        Foreground="#333333" 
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Right" 
-                        Margin="0,0,20,0"
-                        />
-                    
+                    <TextBlock x:Name="quiz_score" Text="Score: 0/0" 
+                               FontSize="13" FontWeight="SemiBold" Foreground="#D35400"
+                               VerticalAlignment="Center" Margin="20,0,0,0"/>
+                    <TextBlock x:Name="quiz_progress" Text="Question 0 of 0" 
+                               FontSize="13" FontWeight="SemiBold" Foreground="#666666"
+                               VerticalAlignment="Center" HorizontalAlignment="Right" 
+                               Margin="0,0,20,0"/>
                 </Grid>
             </Border>
 
-            <ListView 
-                Grid.Row="1" 
-                x:Name="quiz_chats" 
-                Margin="10,60,10,10" 
-                Background="White"
-                BorderBrush="#A2D2FF" 
-                BorderThickness="2"
-                />
+            <ListView Grid.Row="1" x:Name="quiz_chats" 
+                      Margin="15,80,15,10"
+                      Background="#F8FAFC" BorderBrush="#E67E22"
+                      BorderThickness="2" 
+                      Style="{StaticResource ModernListView}"/>
 
-            <Border 
-                Grid.Row="2" 
-                Background="#2D2D3D" 
-                Height="80" 
-                CornerRadius="10,10,0,0">
-                
+            <Border Grid.Row="2" Background="White" Height="80" CornerRadius="15,15,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -483,47 +596,22 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox 
-                        Grid.Column="0" 
-                        x:Name="quiz_question" 
-                        Height="45"
-                        Margin="15,15,10,20" 
-                        Background="White" 
-                        Foreground="#333333"
-                        BorderBrush="#A2D2FF" 
-                        BorderThickness="2" 
-                        FontSize="13"
-                        VerticalContentAlignment="Center"
-                        />
+                    <TextBox Grid.Column="0" x:Name="quiz_question" 
+                             Style="{StaticResource ModernTextBox}"
+                             Height="50" Margin="15,15,10,15"
+                             FontSize="14" VerticalContentAlignment="Center"/>
 
-                    <Button 
-                        Grid.Column="1" 
-                        Width="80" 
-                        Height="45" 
-                        Margin="0,15,15,20"
-                        Background="#4A90D9" 
-                        Foreground="White" 
-                        FontSize="14"
-                        FontWeight="Bold" 
-                        Content="Answer" 
-                        Cursor="Hand"
-                        Click="send_quiz_answer"
-                        />
+                    <Button Grid.Column="1" Width="80" Height="50"
+                            Margin="0,15,10,15"
+                            Style="{StaticResource OrangeButton}"
+                            Content="Answer"
+                            Click="send_quiz_answer"/>
 
-                    <Button 
-                        Grid.Column="2" 
-                        Width="100" 
-                        Height="45" 
-                        Margin="0,15,15,20"
-                        Background="#4A90D9" 
-                        Foreground="White" 
-                        FontSize="12"
-                        FontWeight="Bold" 
-                        Content="End Quiz" 
-                        Cursor="Hand"
-                        Click="end_quiz"
-                        />
-                    
+                    <Button Grid.Column="2" Width="110" Height="50"
+                            Margin="0,15,15,15"
+                            Style="{StaticResource RedButton}"
+                            Content="End Quiz"
+                            Click="end_quiz"/>
                 </Grid>
             </Border>
         </Grid>

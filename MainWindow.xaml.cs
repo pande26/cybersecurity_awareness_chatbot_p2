@@ -698,5 +698,10 @@ namespace cybersecurity_awareness_chatbot_p2
             logger.add_log("Application started by user: " + username);
         }
 
+        private void close_application(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
     }
 }
