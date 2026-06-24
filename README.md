@@ -112,3 +112,63 @@ Prerequisites
 Windows Operating System
 .NET Framework 4.7.2 or later
 Visual Studio 2019/2022
+
+Example Questions to Ask
+General Questions:
+"How are you?"
+"What's your purpose?"
+"What can I ask you about?"
+
+Password Safety:
+"Tell me about passwords"
+"How do I create a strong password?"
+"Password safety tips"
+
+Scam Detection:
+"What is a scam?"
+"How to avoid online scams?"
+"Tell me about fraud"
+
+Privacy Protection:
+"How can I protect my privacy?"
+"Tell me about privacy"
+"Privacy protection tips"
+
+Phishing Awareness:
+"What is phishing?"
+"How to spot a phishing email?"
+
+Follow-up Questions:
+"Another tip"
+"Tell me more"
+"Explain more"
+
+Sentiment Expressions:
+"I'm worried about online scams"
+"This is frustrating"
+"I'm confused about cybersecurity"
+"I'm happy with that tip"
+"That makes me sad"
+"I'm angry about scammers"
+
+Video Presentation
+An unlisted YouTube video presentation is available demonstrating:
+Full application functionality
+Code structure explanation
+Logic and flow demonstration
+Voice greeting playback
+Keyword recognition
+Random responses
+Conversation flow
+Sentiment detection
+
+YouTube Video link: https://youtu.be/XlbPtzr7_-U
+
+
+Author
+Pandelani
+Course: DISD0601 Y2
+Part: 2 of 3
+Institution: ROSEBANK INTERNATIONAL
+
+
