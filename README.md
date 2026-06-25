@@ -198,7 +198,7 @@ Cybersecurity Quiz
 NLP Simulation
 Activity Log
 
-YouTube Video link: 
+YouTube Video link: https://youtu.be/qzE6slRxDqQ
 
 Author
 Pandelani
