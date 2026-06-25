@@ -5,27 +5,35 @@ using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace cybersecurity_awareness_chatbot_p2
-{
+{//start of namespace
+
     public class quiz_manager
-    {
+    {//start of class
+
+        // Quiz data storage
         private ArrayList questions;
         private int current_question_index;
         private int score;
         private bool quiz_active;
         private string username;
 
+        // Constructor - initializes quiz with questions
         public quiz_manager(string user)
-        {
+        {//start of constructor
+
             username = user;
             questions = new ArrayList();
             current_question_index = 0;
             score = 0;
             quiz_active = false;
             load_questions();
-        }
 
+        }//end of constructor
+
+        // Load all quiz questions
         private void load_questions()
-        {
+        {//start of method
+
             // Question 1 - Phishing
             questions.Add(new quiz_question
             {
@@ -133,15 +141,21 @@ namespace cybersecurity_awareness_chatbot_p2
                 correct_answer = 1,
                 explanation = "Public Wi-Fi is not secure for online banking. Use a VPN or your mobile data for sensitive transactions."
             });
-        }
 
+        }//end of method
+
+        // Check if quiz is currently active
         public bool is_quiz_active()
-        {
-            return quiz_active;
-        }
+        {//start of method
 
+            return quiz_active;
+
+        }//end of method
+
+        // Start the quiz
         public string start_quiz(ListView chat_list)
-        {
+        {//start of method
+
             if (questions.Count == 0)
             {
                 return "Sorry, no questions are available for the quiz.";
@@ -152,10 +166,13 @@ namespace cybersecurity_awareness_chatbot_p2
             score = 0;
 
             return get_current_question();
-        }
 
+        }//end of method
+
+        // Process user's answer
         public string process_answer(string answer, ListView chat_list)
-        {
+        {//start of method
+
             if (!quiz_active)
             {
                 return "The quiz is not active. Type 'Start quiz' to begin.";
@@ -163,7 +180,7 @@ namespace cybersecurity_awareness_chatbot_p2
 
             string clean_answer = answer.ToUpper().Trim();
 
-            // Convert answer to index
+            // Convert answer letter to index
             int selected_index = -1;
             quiz_question current_question = (quiz_question)questions[current_question_index];
 
@@ -176,7 +193,7 @@ namespace cybersecurity_awareness_chatbot_p2
             else if (clean_answer == "D" || clean_answer == "4")
                 selected_index = 3;
 
-            // Check if valid
+            // Validate answer
             if (selected_index == -1 || selected_index >= current_question.options.Length)
             {
                 return "Please enter a valid answer (A, B, C, or D).";
@@ -210,10 +227,13 @@ namespace cybersecurity_awareness_chatbot_p2
 
             // Return result and next question
             return result_message + "\n\n" + get_current_question();
-        }
 
+        }//end of method
+
+        // Get current question text
         private string get_current_question()
-        {
+        {//start of method
+
             if (current_question_index >= questions.Count)
                 return "";
 
@@ -228,13 +248,17 @@ namespace cybersecurity_awareness_chatbot_p2
 
             question_text += "\nType your answer (A, B, C, or D):";
             return question_text;
-        }
 
+        }//end of method
+
+        // Get final score message
         private string get_final_score_message()
-        {
+        {//start of method
+
             int total_questions = questions.Count;
             double percentage = (double)score / total_questions * 100;
 
+            // Determine feedback based on score
             string feedback = "";
             if (percentage >= 90)
                 feedback = "Excellent! You're a cybersecurity pro!";
@@ -248,24 +272,36 @@ namespace cybersecurity_awareness_chatbot_p2
             return "Quiz Complete!\n" +
                    "Your Score: " + score + " out of " + total_questions + " (" + percentage.ToString("F0") + "%)\n" +
                    feedback;
-        }
 
+        }//end of method
+
+        // Get current question index
         public int get_current_question_index()
-        {
+        {//start of method
+
             return current_question_index;
-        }
 
+        }//end of method
+
+        // Get total number of questions
         public int get_total_questions()
-        {
-            return questions.Count;
-        }
-    }
+        {//start of method
 
+            return questions.Count;
+
+        }//end of method
+
+    }//end of class
+
+    // Class to represent a quiz question
     public class quiz_question
-    {
+    {//start of class
+
         public string question_text { get; set; }
         public string[] options { get; set; }
         public int correct_answer { get; set; }
         public string explanation { get; set; }
-    }
-}
+
+    }//end of class
+
+}//end of namespace

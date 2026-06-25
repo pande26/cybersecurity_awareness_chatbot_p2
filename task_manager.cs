@@ -3,9 +3,12 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace cybersecurity_awareness_chatbot_p2
-{
+{//start of namespace
+
     public class task_manager
-    {
+    {//start of class
+
+        // Database helper instance
         private database_helper dbHelper;
 
         // Variables to hold task details
@@ -16,15 +19,19 @@ namespace cybersecurity_awareness_chatbot_p2
         private bool waiting_for_reminder = false;
         private string pending_task_name = "";
 
+        // Constructor - initializes database helper
         public task_manager()
-        {
+        {//start of constructor
+
             dbHelper = new database_helper();
             dbHelper.ensure_database_setup();
-        }
+
+        }//end of constructor
 
         // Main method to process task commands
         public string process_task_command(string user_input, ListView chat_list)
-        {
+        {//start of method
+
             // Check if we're waiting for a reminder response
             if (waiting_for_reminder)
             {
@@ -67,11 +74,13 @@ namespace cybersecurity_awareness_chatbot_p2
             }
 
             return null;
-        }
+
+        }//end of method
 
         // Handle adding a task
         private string handle_add_task(string user_input, ListView chat_list)
-        {
+        {//start of method
+
             // Extract task name
             task_name = user_input;
 
@@ -85,23 +94,28 @@ namespace cybersecurity_awareness_chatbot_p2
                 }
             }
 
+            // Validate task name
             if (string.IsNullOrEmpty(task_name))
             {
                 return "Please specify a task name. Example: 'Add task to enable two-factor authentication'";
             }
 
+            // Set flag to wait for reminder response
             waiting_for_reminder = true;
             pending_task_name = task_name;
             task_description = "No description provided";
 
             return "Task '" + task_name + "' added. Would you like a reminder? Type 'Yes, remind me in X days' or 'No'.";
-        }
+
+        }//end of method
 
         // Process reminder response
         private string process_reminder_response(string user_input, ListView chat_list)
-        {
+        {//start of method
+
             string lowerInput = user_input.ToLower().Trim();
 
+            // User says no to reminder
             if (lowerInput.StartsWith("no"))
             {
                 dbHelper.insert_task(pending_task_name, task_description, "No reminder", "Pending");
@@ -111,9 +125,11 @@ namespace cybersecurity_awareness_chatbot_p2
                 return "Task '" + name + "' saved. You can view it by saying 'Show my tasks'.";
             }
 
+            // User says yes to reminder
             if (lowerInput.Contains("remind me in") || lowerInput.Contains("remind in") ||
                 lowerInput.StartsWith("yes"))
             {
+                // Extract number of days using Regex
                 string days_number = Regex.Replace(user_input, @"[^0-9]", "");
 
                 if (string.IsNullOrEmpty(days_number))
@@ -128,6 +144,7 @@ namespace cybersecurity_awareness_chatbot_p2
                 task_due_date = format_date;
                 task_status = "Pending";
 
+                // Insert task with reminder
                 dbHelper.insert_task(pending_task_name, task_description, task_due_date, task_status);
 
                 string name = pending_task_name;
@@ -139,11 +156,13 @@ namespace cybersecurity_awareness_chatbot_p2
             }
 
             return "I didn't understand that. Please say 'Yes, remind me in X days' or 'No'.";
-        }
+
+        }//end of method
 
         // Handle showing tasks
         private string handle_show_tasks(ListView chat_list)
-        {
+        {//start of method
+
             dbHelper.load_tasks(chat_list);
 
             int count = dbHelper.count_tasks();
@@ -155,11 +174,13 @@ namespace cybersecurity_awareness_chatbot_p2
             {
                 return "You don't have any pending tasks. Say 'Add task to...' to create one.";
             }
-        }
+
+        }//end of method
 
         // Handle completing a task
         private string handle_complete_task(string user_input, ListView chat_list)
-        {
+        {//start of method
+
             string task_search = user_input;
             string[] prefixes = { "complete task", "finish task", "mark done", "mark complete" };
 
@@ -178,11 +199,13 @@ namespace cybersecurity_awareness_chatbot_p2
             }
 
             return "To complete a task, please use the 'View Tasks' button and double-click on the task.";
-        }
+
+        }//end of method
 
         // Handle deleting a task
         private string handle_delete_task(string user_input, ListView chat_list)
-        {
+        {//start of method
+
             string task_search = user_input;
             string[] prefixes = { "delete task", "remove task" };
 
@@ -201,32 +224,41 @@ namespace cybersecurity_awareness_chatbot_p2
             }
 
             return "To delete a task, please use the 'View Tasks' button and double-click on the task.";
-        }
+
+        }//end of method
 
         // Handle adding a reminder
         private string handle_add_reminder(string user_input, ListView chat_list)
-        {
+        {//start of method
+
             return "Please specify a task and reminder date. Example: 'Remind me to update password in 7 days'";
-        }
+
+        }//end of method
 
         // Method to get pending task count
         public int get_pending_task_count()
-        {
+        {//start of method
+
             return dbHelper.count_tasks();
-        }
+
+        }//end of method
 
         // Method to load tasks for the view grid
         public void load_tasks_for_view(ListView view_tasks)
-        {
+        {//start of method
+
             view_tasks.Items.Clear();
             dbHelper.load_tasks(view_tasks);
-        }
+
+        }//end of method
 
         // Method to get task ID from display text
         public int get_task_id_from_display(string display_text)
-        {
+        {//start of method
+
             try
             {
+                // Split by '.' to get the task ID
                 string[] parts = display_text.Split('.');
                 if (parts.Length > 0)
                 {
@@ -238,22 +270,26 @@ namespace cybersecurity_awareness_chatbot_p2
                 return -1;
             }
             return -1;
-        }
+
+        }//end of method
 
         // Method to process double-click on task
         public string process_task_click(string selected_item)
-        {
+        {//start of method
+
             if (string.IsNullOrEmpty(selected_item) || selected_item.StartsWith("No tasks found"))
             {
                 return "No task selected.";
             }
 
+            // Get task ID from display text
             int task_id = get_task_id_from_display(selected_item);
             if (task_id == -1)
             {
                 return "Could not identify the task.";
             }
 
+            // Check task status
             using (var reader = dbHelper.get_task_by_id(task_id))
             {
                 if (reader != null && reader.Read())
@@ -263,11 +299,13 @@ namespace cybersecurity_awareness_chatbot_p2
 
                     if (status == "Completed")
                     {
+                        // Delete completed task
                         dbHelper.delete_task(task_id);
                         return "Task already completed. It has been removed from your list.";
                     }
                     else
                     {
+                        // Mark pending task as completed
                         dbHelper.complete_task(task_id);
                         return "Task marked as completed.";
                     }
@@ -278,6 +316,9 @@ namespace cybersecurity_awareness_chatbot_p2
                     return "Task not found.";
                 }
             }
-        }
-    }
-}
+
+        }//end of method
+
+    }//end of class
+
+}//end of namespace
